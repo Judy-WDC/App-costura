@@ -8,6 +8,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#9b3a3a">
+<link rel="apple-touch-icon" href="nuska-icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Nuska">
 <style>
   :root {
     --bg: #f4efe8;
@@ -1411,6 +1415,7 @@
     document.getElementById('view-' + view).classList.add('active');
     event.target.classList.add('active');
     if (view === 'biblioteca') carregarTutorials();
+    history.pushState({ view }, '', '');
   }
 
   function showViewDirect(view) {
@@ -1420,7 +1425,26 @@
     const btn = document.querySelector(`.nav-btn[onclick="showView('${view}')"]`);
     if (btn) btn.classList.add('active');
     if (view === 'biblioteca') carregarTutorials();
+    history.pushState({ view }, '', '');
   }
+
+  // Botó enrere del mòbil
+  history.pushState({ view: 'inici' }, '', '');
+  window.addEventListener('popstate', () => {
+    if (document.getElementById('lightbox').classList.contains('actiu')) {
+      tancarLightbox(); history.pushState({}, '', ''); return;
+    }
+    if (document.getElementById('celebracio-overlay').classList.contains('actiu')) {
+      tancarCelebracio(); history.pushState({}, '', ''); return;
+    }
+    if (document.getElementById('modal-edicio').classList.contains('open')) {
+      tancarModal(); history.pushState({}, '', ''); return;
+    }
+    const vistaActiva = document.querySelector('.view.active');
+    if (vistaActiva && vistaActiva.id !== 'view-inici') {
+      showViewDirect('inici'); return;
+    }
+  });
 
   function anarABiblioteca(filtre) {
     showViewDirect('biblioteca');
