@@ -304,10 +304,10 @@
     border: 1px solid var(--border);
     background: var(--surface);
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: var(--transition);
-    color: var(--text-muted);
+    color: #5c0a1e;
     font-weight: 400;
   }
 
@@ -812,6 +812,161 @@
     transition: var(--transition);
   }
   .portada-btn-secundari:hover { background: var(--surface2); }
+  .portada-stat-link {
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 0.4rem 0.75rem;
+    transition: var(--transition);
+  }
+  .portada-stat-link:hover { background: rgba(92,10,30,0.07); }
+  .portada-stat-link:hover .portada-stat-num { color: #5c0a1e; }
+
+  .portada-novetats {
+    background: var(--surface);
+    border: 1.5px solid #c97d8a;
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+    margin: -0.2rem 3px 1.2rem;
+    text-align: left;
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .portada-novetats ol { padding-left: 1.2rem; margin: 0.4rem 0; }
+  .portada-novetats li { margin-bottom: 0.2rem; }
+  .portada-novetats p { margin: 0.4rem 0; }
+  .novetats-titol {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #5c0a1e;
+    margin-bottom: 0.5rem;
+  }
+  .novetats-btn-tancar {
+    display: block;
+    width: 100%;
+    padding: 0.55rem 1rem;
+    border-radius: 20px;
+    border: 1.5px solid #5c0a1e;
+    background: transparent;
+    color: #5c0a1e;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 0.5rem;
+  }
+  .novetats-btn-tancar:hover { background: #5c0a1e; color: #fff; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+  }
+  .lightbox-overlay.actiu { display: flex; }
+  .lightbox-img {
+    max-width: 94vw;
+    max-height: 88vh;
+    border-radius: 8px;
+    object-fit: contain;
+    user-select: none;
+    transform-origin: center center;
+    transition: transform 0.1s;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 14px; right: 18px;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.8;
+    z-index: 10000;
+  }
+  .lightbox-close:hover { opacity: 1; }
+  .lightbox-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 2.2rem;
+    cursor: pointer;
+    opacity: 0.6;
+    padding: 0.5rem;
+    z-index: 10000;
+    user-select: none;
+  }
+  .lightbox-nav:hover { opacity: 1; }
+  .lightbox-nav.prev { left: 10px; }
+  .lightbox-nav.next { right: 10px; }
+  .lightbox-nav.ocult { display: none; }
+  .lightbox-counter {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .card-galeria-foto { cursor: zoom-in; }
+
+  /* ── CELEBRACIÓ ── */
+  .celebracio-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .celebracio-overlay.actiu { display: flex; }
+  .celebracio-box {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 2rem 2rem 1.5rem;
+    text-align: center;
+    max-width: 320px;
+    width: 88%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    position: relative;
+    z-index: 1;
+  }
+  .celebracio-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
+  .celebracio-text {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #5c0a1e;
+    line-height: 1.4;
+    margin-bottom: 1.2rem;
+  }
+  .celebracio-btn {
+    background: #5c0a1e;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.6rem 1.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .celebracio-btn:hover { background: #7c0a2e; }
+  .confeti-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
   .portada-peu {
     margin-top: 40px;
     padding-top: 20px;
@@ -939,19 +1094,39 @@
       <h1 class="portada-titol">Benvinguda, <span class="portada-nom">Nuska!</span></h1>
       <p class="portada-frase" id="portada-frase"></p>
       <div class="portada-stats-row">
-        <div class="portada-stat">
+        <div class="portada-stat portada-stat-link" onclick="anarABiblioteca('tots')" title="Veure tots els tutorials">
           <span class="portada-stat-num" id="p-stat-total">—</span>
           <span class="portada-stat-label">tutorials</span>
         </div>
         <div class="portada-stat-sep"></div>
-        <div class="portada-stat">
+        <div class="portada-stat portada-stat-link" onclick="anarABiblioteca('fets')" title="Veure tutorials fets">
           <span class="portada-stat-num" id="p-stat-fets">—</span>
           <span class="portada-stat-label">fets</span>
         </div>
         <div class="portada-stat-sep"></div>
-        <div class="portada-stat">
+        <div class="portada-stat portada-stat-link" onclick="anarABiblioteca('tots')" title="Veure la biblioteca">
           <span class="portada-stat-num" id="p-stat-cats">—</span>
           <span class="portada-stat-label">categories</span>
+        </div>
+      </div>
+      <div class="portada-novetats" id="portada-novetats">
+        <div class="novetats-contingut">
+          <div class="novetats-titol">Atenció, atencióoo!</div>
+          <p><strong>NOVETATS de la versió 4 d'aquesta súper aplicació</strong> ;)</p>
+          <p>Per aclamació popular, hem fet que...</p>
+          <ol>
+            <li>A la pantalla inicial ja hi funcionen els links dels comptadors.</li>
+            <li>Enlloc de "Intenció" posa "Estat".</li>
+            <li>Els botons de categories tenen més contrast i la tipografia una mica més gran.</li>
+            <li>La categoria "Bosses i bolsos"… ja són dues categories separades!</li>
+            <li>La categoria "Samarretes…" ara ja es diu "Trucs"!</li>
+            <li>Si cliques a les fotos, les veuràs grans.</li>
+            <li>I alguna sorpreseta... ;)</li>
+          </ol>
+          <p>Espero que aquests canvis et siguin molt útils!</p>
+          <p>I recorda, ves anotant-te coses que milloraries, per tal que ho pugui implementar!</p>
+          <p style="margin-bottom:0.75rem">Petoneeets!</p>
+          <button class="novetats-btn-tancar" onclick="tancarNovetats()">✓ Ja ho he llegit, no me les tornis a mostrar</button>
         </div>
       </div>
       <div class="portada-botons">
@@ -995,10 +1170,11 @@
     <div class="filters-bar">
       <span class="filter-label">Categoria:</span>
       <button class="filter-chip active" data-cat="tots" onclick="setFilter('tots', this)">Tots</button>
-      <button class="filter-chip" data-cat="bosses i bolsos" onclick="setFilter('bosses i bolsos', this)">Bosses i bolsos</button>
+      <button class="filter-chip" data-cat="Bosses" onclick="setFilter('Bosses', this)">Bosses</button>
+      <button class="filter-chip" data-cat="Bolsos" onclick="setFilter('Bolsos', this)">Bolsos</button>
       <button class="filter-chip" data-cat="moneders" onclick="setFilter('moneders', this)">Moneders</button>
       <button class="filter-chip" data-cat="necessers" onclick="setFilter('necessers', this)">Necessers</button>
-      <button class="filter-chip" data-cat="samarretes i camises" onclick="setFilter('samarretes i camises', this)">Samarretes i camises</button>
+      <button class="filter-chip" data-cat="Trucs" onclick="setFilter('Trucs', this)">Trucs</button>
       <button class="filter-chip" data-cat="altres" onclick="setFilter('altres', this)">Altres</button>
       <div class="search-box">
         <span class="search-icon">🔍</span>
@@ -1006,7 +1182,7 @@
       </div>
     </div>
     <div class="filters-bar" style="margin-top:0.4rem">
-      <span class="filter-label">Intenció:</span>
+      <span class="filter-label">Estat:</span>
       <button class="filter-chip active" data-intencio="totes" onclick="setFiltreIntencio('totes', this)">Totes</button>
       <button class="filter-chip" data-intencio="en curs" onclick="setFiltreIntencio('en curs', this)">En curs</button>
       <button class="filter-chip" data-intencio="propera costura" onclick="setFiltreIntencio('propera costura', this)">Propera costura</button>
@@ -1042,10 +1218,11 @@
           <label for="f-categoria">Categoria</label>
           <select id="f-categoria">
             <option value="">— Selecciona —</option>
-            <option value="bosses i bolsos">Bosses i bolsos</option>
+            <option value="Bosses">Bosses</option>
+            <option value="Bolsos">Bolsos</option>
             <option value="moneders">Moneders</option>
             <option value="necessers">Necessers</option>
-            <option value="samarretes i camises">Samarretes i camises</option>
+            <option value="Trucs">Trucs</option>
             <option value="altres">Altres</option>
           </select>
         </div>
@@ -1146,10 +1323,11 @@
         <label for="edit-categoria">Categoria</label>
         <select id="edit-categoria">
           <option value="">— Selecciona —</option>
-          <option value="bosses i bolsos">Bosses i bolsos</option>
+          <option value="Bosses">Bosses</option>
+          <option value="Bolsos">Bolsos</option>
           <option value="moneders">Moneders</option>
           <option value="necessers">Necessers</option>
-          <option value="samarretes i camises">Samarretes i camises</option>
+          <option value="Trucs">Trucs</option>
           <option value="altres">Altres</option>
         </select>
       </div>
@@ -1244,7 +1422,204 @@
     if (view === 'biblioteca') carregarTutorials();
   }
 
+  function anarABiblioteca(filtre) {
+    showViewDirect('biblioteca');
+    carregarTutorials().then(() => {
+      if (filtre === 'fets' || filtre === 'pendents') {
+        filtreIntencio = filtre;
+        document.querySelectorAll('[data-intencio]').forEach(c => c.classList.remove('active'));
+        document.querySelector(`[data-intencio="${filtre}"]`)?.classList.add('active');
+        document.querySelectorAll('.stat-clickable').forEach(s => s.classList.remove('actiu'));
+        const idx = { fets: 1, pendents: 2 }[filtre];
+        document.querySelectorAll('.stat-clickable')[idx]?.classList.add('actiu');
+      } else {
+        filtreIntencio = 'totes';
+        document.querySelectorAll('[data-intencio]').forEach(c => c.classList.remove('active'));
+        document.querySelector('[data-intencio="totes"]')?.classList.add('active');
+      }
+      renderTutorials();
+    });
+  }
+
+  function tancarNovetats() {
+    localStorage.setItem('nuska_novetats_v4_5_llegit', '1');
+    document.getElementById('portada-novetats').style.display = 'none';
+  }
+
+  // ── CELEBRACIÓ ──
+  const FRASES_CELEBRACIO = {
+    40: "Ja has introduït 40 tutorials! Molt bé, mama!!",
+    50: "Eiii, ja portes 50 tutorials! Vas bé, mama, vinga, no paris!!",
+    60: "Toma yaaa! 60 tutorials! Estàs en ratxa, mama!!",
+    70: "Oleee mama! Ja tens 70 tutorials! Viiinga!",
+    80: "Uala! Súper màquina! Ja has arribat als 80 tutorials, enhorabona mama!!",
+    81: "Si vols més frases d'aquestes, avisa'm, que te'n posaré més! Hehehe!"
+  };
+
+  function comprovarCelebracio(total) {
+    const frase = FRASES_CELEBRACIO[total];
+    if (!frase) return;
+    document.getElementById('celebracio-text').textContent = frase;
+    document.getElementById('celebracio-overlay').classList.add('actiu');
+    if (total !== 81) llançarConfeti();
+  }
+
+  function tancarCelebracio() {
+    document.getElementById('celebracio-overlay').classList.remove('actiu');
+    if (confettiAnim) { cancelAnimationFrame(confettiAnim); confettiAnim = null; }
+    const canvas = document.getElementById('confeti-canvas');
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function llançarConfeti() {
+    const canvas = document.getElementById('confeti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const colors = ['#5c0a1e','#e8a0b0','#f4c842','#4a90d9','#7bc67e','#f4efe8'];
+    const particles = Array.from({length: 120}, () => ({
+      x: Math.random() * canvas.width,
+      y: -10 - Math.random() * 100,
+      r: 4 + Math.random() * 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 3,
+      vy: 2 + Math.random() * 3,
+      rot: Math.random() * 360,
+      rotV: (Math.random() - 0.5) * 6
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot * Math.PI / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.5);
+        ctx.restore();
+        p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
+      });
+      if (particles.some(p => p.y < canvas.height + 20)) {
+        confettiAnim = requestAnimationFrame(draw);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+    draw();
+  }
+
+  // ── LIGHTBOX ──
+  let lbFotos = [], lbIdx = 0;
+  let lbZoom = 1, lbPanX = 0, lbPanY = 0;
+  let lbPinchDist = null;
+  let lbSwipeX = null, lbSwipeY = null;
+  let lbDragging = false, lbDragStartX = 0, lbDragStartY = 0;
+
+  function obrirLightbox(img) {
+    const wrap = img.closest('.card-galeria-fotos');
+    const totes = wrap ? Array.from(wrap.querySelectorAll('.card-galeria-foto')) : [img];
+    lbFotos = totes.map(i => i.src);
+    lbIdx = totes.indexOf(img);
+    if (lbIdx < 0) lbIdx = 0;
+    lbZoom = 1; lbPanX = 0; lbPanY = 0;
+    actualitzarLightbox();
+    document.getElementById('lightbox').classList.add('actiu');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function tancarLightbox() {
+    document.getElementById('lightbox').classList.remove('actiu');
+    document.body.style.overflow = '';
+    lbZoom = 1; lbPanX = 0; lbPanY = 0;
+    aplicarTransformLb();
+  }
+
+  function actualitzarLightbox() {
+    const imgEl = document.getElementById('lightbox-img');
+    imgEl.src = lbFotos[lbIdx];
+    imgEl.style.transform = 'scale(1) translate(0px, 0px)';
+    lbZoom = 1; lbPanX = 0; lbPanY = 0;
+    document.getElementById('lb-prev').classList.toggle('ocult', lbFotos.length <= 1 || lbIdx === 0);
+    document.getElementById('lb-next').classList.toggle('ocult', lbFotos.length <= 1 || lbIdx === lbFotos.length - 1);
+    document.getElementById('lb-counter').textContent = lbFotos.length > 1 ? `${lbIdx + 1} / ${lbFotos.length}` : '';
+  }
+
+  function lightboxNav(dir) {
+    lbIdx = Math.max(0, Math.min(lbFotos.length - 1, lbIdx + dir));
+    actualitzarLightbox();
+  }
+
+  function lightboxClickFora(e) {
+    if (e.target === document.getElementById('lightbox')) tancarLightbox();
+  }
+
+  function aplicarTransformLb() {
+    document.getElementById('lightbox-img').style.transform = `scale(${lbZoom}) translate(${lbPanX}px, ${lbPanY}px)`;
+  }
+
+  // Teclat
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('actiu')) return;
+    if (e.key === 'Escape') tancarLightbox();
+    if (e.key === 'ArrowLeft') lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+  });
+
+  // Touch events (swipe + pinch)
+  const lbImg = document.getElementById('lightbox-img');
+
+  lbImg.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      lbPinchDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+    } else if (e.touches.length === 1) {
+      lbSwipeX = e.touches[0].clientX;
+      lbSwipeY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  lbImg.addEventListener('touchmove', e => {
+    if (e.touches.length === 2 && lbPinchDist !== null) {
+      e.preventDefault();
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      lbZoom = Math.min(5, Math.max(1, lbZoom * (dist / lbPinchDist)));
+      lbPinchDist = dist;
+      aplicarTransformLb();
+    } else if (e.touches.length === 1 && lbZoom > 1) {
+      e.preventDefault();
+      lbPanX += (e.touches[0].clientX - lbSwipeX) / lbZoom;
+      lbPanY += (e.touches[0].clientY - lbSwipeY) / lbZoom;
+      lbSwipeX = e.touches[0].clientX;
+      lbSwipeY = e.touches[0].clientY;
+      aplicarTransformLb();
+    }
+  }, { passive: false });
+
+  lbImg.addEventListener('touchend', e => {
+    if (e.changedTouches.length === 1 && lbZoom <= 1 && lbSwipeX !== null) {
+      const dx = e.changedTouches[0].clientX - lbSwipeX;
+      if (Math.abs(dx) > 50) lightboxNav(dx < 0 ? 1 : -1);
+    }
+    lbPinchDist = null;
+  }, { passive: true });
+
+  // Doble tap per reset zoom
+  let lbLastTap = 0;
+  lbImg.addEventListener('touchend', e => {
+    const now = Date.now();
+    if (now - lbLastTap < 300) { lbZoom = 1; lbPanX = 0; lbPanY = 0; aplicarTransformLb(); }
+    lbLastTap = now;
+  }, { passive: true });
+
   function inicialitzarPortada() {
+    if (localStorage.getItem('nuska_novetats_v4_5_llegit')) {
+      document.getElementById('portada-novetats').style.display = 'none';
+    }
     const dies = ['diumenge','dilluns','dimarts','dimecres','dijous','divendres','dissabte'];
     const mesos = ['de gener','de febrer','de març','d\'abril','de maig','de juny','de juliol','d\'agost','de setembre','d\'octubre','de novembre','de desembre'];
     const ara = new Date();
@@ -1298,7 +1673,8 @@
     const fets = tutorials.filter(t => t['feta?'] === 'si' || t['feta?'] === 'sí' || t['feta?'] === 'true').length;
     document.getElementById('stat-total').textContent = total;
     document.getElementById('stat-fets').textContent = fets;
-    document.getElementById('stat-pendents').textContent = total - fets;
+    const pendents = tutorials.filter(t => (t['intencio'] || '').toLowerCase().trim() === 'pendent').length;
+    document.getElementById('stat-pendents').textContent = pendents;
     document.getElementById('stats-bar').style.display = total > 0 ? 'flex' : 'none';
   }
 
@@ -1329,6 +1705,7 @@
     filtreActiu = cat;
     document.querySelectorAll('[data-cat]').forEach(c => c.classList.remove('active'));
     btn.classList.add('active');
+    document.querySelectorAll('.stat-clickable').forEach(s => s.classList.remove('actiu'));
     renderTutorials();
   }
 
@@ -1441,7 +1818,7 @@
       <div class="card-galeria">
         <div class="card-galeria-label">Les meves fotos</div>
         <div class="card-galeria-fotos" data-nom="${nomEsc}">
-          ${(t['fotos'] || '').split(',').filter(u => u.trim()).map(u => `<div class="card-galeria-foto-wrap"><img src="${u.trim()}" class="card-galeria-foto" loading="lazy"><button class="card-galeria-delete" onclick="eliminarFoto(this,'${nomEsc}','${u.trim()}')" title="Eliminar foto">✕</button></div>`).join('')}
+          ${(t['fotos'] || '').split(',').filter(u => u.trim()).map(u => `<div class="card-galeria-foto-wrap"><img src="${u.trim()}" class="card-galeria-foto" loading="lazy" onclick="obrirLightbox(this)"><button class="card-galeria-delete" onclick="event.stopPropagation();eliminarFoto(this,'${nomEsc}','${u.trim()}')" title="Eliminar foto">✕</button></div>`).join('')}
           <button class="card-galeria-add" onclick="afegirFoto(this)" title="Afegir foto">+</button>
           <input type="file" accept="image/*" style="display:none" onchange="mostrarFoto(event, this)">
         </div>
@@ -1581,6 +1958,8 @@
       if (data.ok) {
         mostrarStatus('status-afegir', 'ok', '✓ Tutorial guardat correctament!');
         netejarFormulari();
+        await carregarTutorials();
+        comprovarCelebracio(tutorials.length);
       } else {
         mostrarStatus('status-afegir', 'error', 'Error en guardar. Torna-ho a intentar.');
       }
@@ -1676,6 +2055,7 @@
     filtreIntencio = val;
     document.querySelectorAll('[data-intencio]').forEach(c => c.classList.remove('active'));
     btn.classList.add('active');
+    document.querySelectorAll('.stat-clickable').forEach(s => s.classList.remove('actiu'));
     renderTutorials();
   }
 
@@ -1817,7 +2197,7 @@
           deleteBtn.className = 'card-galeria-delete';
           deleteBtn.title = 'Eliminar foto';
           deleteBtn.textContent = '✕';
-          deleteBtn.onclick = () => eliminarFoto(deleteBtn, nomTutorial, data.url);
+          deleteBtn.onclick = (e) => { e.stopPropagation(); eliminarFoto(deleteBtn, nomTutorial, data.url); };
           wrap.appendChild(deleteBtn);
         } else {
           wrap.remove();
@@ -1849,5 +2229,22 @@
   inicialitzarPortada();
   carregarTutorials().then(actualitzarPortadaStats);
 </script>
+  <canvas class="confeti-canvas" id="confeti-canvas"></canvas>
+  <div class="celebracio-overlay" id="celebracio-overlay">
+    <div class="celebracio-box">
+      <div class="celebracio-emoji">🎉</div>
+      <div class="celebracio-text" id="celebracio-text"></div>
+      <button class="celebracio-btn" onclick="tancarCelebracio()">Tancar</button>
+    </div>
+  </div>
+
+</body> onclick="lightboxClickFora(event)">
+    <span class="lightbox-close" onclick="tancarLightbox()">✕</span>
+    <span class="lightbox-nav prev" id="lb-prev" onclick="lightboxNav(-1)">‹</span>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <span class="lightbox-nav next" id="lb-next" onclick="lightboxNav(1)">›</span>
+    <div class="lightbox-counter" id="lb-counter"></div>
+  </div>
+
 </body>
 </html>
