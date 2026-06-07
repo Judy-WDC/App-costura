@@ -1,0 +1,2286 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuska</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#9b3a3a">
+<link rel="apple-touch-icon" href="nuska-icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Nuska">
+<style>
+  :root {
+    --bg: #f4efe8;
+    --surface: #faf7f2;
+    --surface2: #ede8e0;
+    --border: #e5ddd3;
+    --text: #1e1a16;
+    --text-muted: #9a8e82;
+    --accent: #b5622a;
+    --accent-light: #cc7a40;
+    --accent-bg: #fdf0e6;
+    --success: #3d7a50;
+    --danger: #9b3a3a;
+    --primary: #5c0a1e;
+    --shadow: 0 2px 12px rgba(30,26,22,0.07);
+    --shadow-lg: 0 8px 32px rgba(30,26,22,0.11);
+    --radius: 12px;
+    --transition: 0.2s ease;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 8px rgba(26,23,20,0.06);
+  }
+
+  .logo {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .logo-accent {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .logo-icon {
+    font-size: 1rem;
+  }
+
+  nav {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: var(--transition);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-btn:hover { background: var(--surface2); color: var(--text); }
+  .nav-btn.active { background: var(--primary); color: white; }
+
+  /* MAIN */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* PAGE TITLE */
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .page-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .page-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+
+  /* FORMULARI */
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    max-width: 680px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  input[type="text"],
+  input[type="url"],
+  select,
+  textarea {
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.925rem;
+    color: var(--text);
+    background: var(--bg);
+    transition: var(--transition);
+    outline: none;
+    width: 100%;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(139,69,19,0.08);
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 0;
+  }
+
+  .checkbox-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .checkbox-row span {
+    font-size: 0.925rem;
+    color: var(--text);
+  }
+
+  .form-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  #btn-eliminar-modal {
+    margin-left: auto;
+  }
+
+  .btn-vista { width:32px; height:32px; border-radius:6px; border:0.5px solid var(--border); background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-muted); transition: var(--transition); }
+  .btn-vista:hover { border-color: var(--primary); color: var(--primary); }
+  .btn-vista.active { background: var(--surface); color: var(--text); }
+
+  /* BOTONS */
+  .btn {
+    padding: 0.6rem 1.4rem;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition);
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+  .btn-primary:hover { background: #3d0614; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(92,10,30,0.25); }
+
+  .btn-secondary {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { background: var(--border); }
+
+  .btn-danger {
+    background: none;
+    color: var(--danger);
+    border: 1px solid transparent;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  .btn-danger:hover { background: #fdf0f0; border-color: var(--danger); }
+
+  .btn-edit {
+    background: none;
+    color: var(--accent);
+    border: 1px solid transparent;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  .btn-edit:hover { background: var(--accent-bg); border-color: var(--primary); }
+
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+  /* MISSATGE D'ESTAT */
+  .status-msg {
+    display: none;
+    padding: 0.7rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    max-width: 680px;
+  }
+  .status-msg.ok { background: #eef6f1; color: var(--success); border: 1px solid #b8d9c4; display: block; }
+  .status-msg.error { background: #fdf0f0; color: var(--danger); border: 1px solid #e8b8b8; display: block; }
+
+  /* VISTA TUTORIALS */
+  .filters-bar {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-right: 0.25rem;
+  }
+
+  .filter-chip {
+    padding: 0.3rem 0.9rem;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.0rem;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--primary);
+    font-weight: 400;
+  }
+
+  .filter-chip:hover { border-color: var(--primary); color: var(--accent); }
+  .filter-chip.active { background: var(--primary); border-color: var(--primary); color: white; font-weight: 500; }
+
+  .search-box {
+    margin-left: auto;
+    position: relative;
+  }
+
+  .search-box input {
+    padding: 0.4rem 0.9rem 0.4rem 2.2rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    background: var(--surface);
+    color: var(--text);
+    width: 200px;
+    transition: var(--transition);
+    outline: none;
+  }
+
+  .search-box input:focus {
+    border-color: var(--primary);
+    width: 240px;
+    box-shadow: 0 0 0 3px rgba(139,69,19,0.08);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .stat-value {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.7rem;
+    font-weight: 400;
+    color: #9b3a3a;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-clickable {
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    transition: var(--transition);
+  }
+  .stat-clickable:hover { background: var(--surface2); }
+  .stat-clickable.actiu { background: #f7e8ec; }
+  .stat-clickable.actiu .stat-value { color: var(--primary); }
+  .stat-clickable.actiu .stat-label { color: var(--primary); }
+
+  .stat-divider {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+  }
+
+  /* GRID DE CARDS */
+  .tutorials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .tutorials-llista { display: flex; flex-direction: column; gap: 6px; }
+  .fila-tutorial { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .fila-main { display: flex; align-items: center; gap: 10px; padding: 8px 12px; cursor: pointer; }
+  .fila-main:hover { background: var(--surface2); }
+  .fila-tutorial.obert { border-color: #c9bfb3; }
+  .fila-tutorial.obert .fila-main { background: var(--surface2); }
+  .fila-nom { flex: 1; font-size: 13px; font-weight: 500; color: var(--text); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fila-chevron { transition: transform 0.2s; flex-shrink: 0; display: flex; align-items: center; }
+  .fila-expandida { display: none; padding: 10px 14px 12px; border-top: 0.5px solid var(--border); }
+  .fila-expandida.obert { display: block; }
+
+  .tutorial-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+  }
+
+  .tutorial-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-color: #d4c9be;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .card-nom {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .badge-feta {
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-feta.si { background: #eef6f1; color: var(--success); border: 1px solid #b8d9c4; }
+  .badge-feta.no { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+
+  .card-video-nom {
+    font-size: 0.875rem;
+    color: var(--text);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .card-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.825rem;
+    color: var(--text-muted);
+  }
+
+  .card-meta-icon { font-size: 0.8rem; flex-shrink: 0; }
+
+  .card-categoria {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    background: #f7e8ec;
+    color: var(--primary);
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(92,10,30,0.2);
+  }
+
+  .card-comentari {
+    font-size: 0.825rem;
+    color: var(--text-muted);
+    font-style: italic;
+    padding-top: 0.25rem;
+    border-top: 1px solid var(--surface2);
+    line-height: 1.5;
+  }
+
+  .card-galeria {
+    border-top: 1px solid var(--surface2);
+    padding-top: 0.6rem;
+  }
+
+  .card-galeria-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .card-galeria-fotos {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .card-galeria-foto {
+    width: 52px;
+    height: 52px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .card-galeria-foto:hover { opacity: 0.85; transform: scale(1.04); }
+
+  .card-galeria-foto-wrap {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+  }
+
+  .card-galeria-foto-wrap .card-galeria-foto {
+    width: 52px;
+    height: 52px;
+  }
+
+  .card-galeria-foto-wrap:hover .card-galeria-foto { opacity: 0.75; transform: scale(1.04); }
+
+  .card-galeria-delete {
+    display: none;
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #7c0a1e;
+    border: 1.5px solid white;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    font-size: 10px;
+    color: white;
+    line-height: 1;
+    z-index: 2;
+  }
+
+  .card-galeria-foto-wrap:hover .card-galeria-delete { display: flex; }
+
+  .card-galeria-add {
+    width: 52px;
+    height: 52px;
+    border-radius: 6px;
+    border: 1.5px dashed var(--border);
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: var(--transition);
+    flex-shrink: 0;
+  }
+
+  .card-galeria-add:hover { border-color: var(--primary); color: var(--accent); background: var(--accent-bg); }
+
+  .card-actions {
+    display: flex;
+    gap: 0.25rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--surface2);
+    justify-content: flex-end;
+  }
+
+  .yt-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.825rem;
+    font-weight: 500;
+    transition: var(--transition);
+    margin-right: auto;
+    padding: 0.4rem 0;
+  }
+
+  .yt-link:hover { color: #3d0614; }
+
+  /* MINIATURA */
+  .card-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 6px;
+    background: var(--surface2);
+    display: block;
+  }
+
+  .card-thumb-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--surface2);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-muted);
+  }
+
+  .empty-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.4; }
+  .empty-title { font-family: 'Libre Baskerville', serif; font-size: 1.15rem; font-weight: 400; color: var(--text); margin-bottom: 0.5rem; }
+  .empty-text { font-size: 0.875rem; }
+
+  /* LOADING */
+  .loading {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-bottom: 0.75rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* MODAL D'EDICIÓ */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,23,20,0.45);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 2rem;
+    width: 100%;
+    max-width: 640px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn 0.2s ease;
+  }
+
+  @keyframes modalIn {
+    from { transform: translateY(12px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+
+  .card-franja { height: 6px; width: 100%; }
+  .card-pills-row { display: flex; gap: 5px; flex-wrap: wrap; margin: 6px 0 4px; }
+  .pill-intencio { font-size: 0.72rem; font-weight: 500; padding: 2px 9px; border-radius: 20px; }
+  .pill-intencio.encurs { background: #FEF3C7; color: #92400E; }
+  .pill-intencio.proxima { background: #EDE9FE; color: #4C1D95; }
+  .pill-intencio.feta { background: #D1FAE5; color: #065F46; }
+  .pill-intencio.pendent { background: #E0F2FE; color: #0C4A6E; }
+  .card-nota-sessio { font-size: 0.78rem; color: var(--text-muted); font-style: italic; padding: 5px 8px; border-left: 2px solid #D97706; background: #FFFBEB; margin: 4px 0; }
+  .star-rating { display: flex; gap: 3px; margin: 4px 0 2px; }
+  .star-rating .star { font-size: 18px; cursor: pointer; color: var(--border); transition: color 0.1s; line-height: 1; }
+  .star-rating .star.on { color: #E8A000; }
+  .card-stars { display: flex; gap: 2px; font-size: 14px; }
+  .card-stars .star-on { color: #E8A000; }
+  .card-stars .star-off { color: var(--border); }
+  .card-vegades { font-size: 0.75rem; color: var(--text-muted); margin: 4px 0 6px; }
+  .chip-intencio { font-size: 0.85rem; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: none; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
+  .chip-intencio.actiu[data-val=""] { background: var(--surface2); color: var(--text); border-color: var(--border); }
+  .chip-intencio.actiu[data-val="en curs"] { background: #FEF3C7; color: #92400E; border-color: #D97706; }
+  .chip-intencio.actiu[data-val="pendent"] { background: #E0F2FE; color: #0C4A6E; border-color: #0284C7; }
+  .chip-intencio.actiu[data-val="propera costura"] { background: #EDE9FE; color: #4C1D95; border-color: #7C3AED; }
+
+  /* PORTADA INICI */
+  .portada-inici {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 56px 24px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .portada-data {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .portada-titol {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+  .portada-nom { color: var(--primary); }
+  .portada-frase {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 44px;
+  }
+  .portada-stats-row {
+    display: flex;
+    gap: 36px;
+    align-items: center;
+    margin-bottom: 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 36px;
+  }
+  .portada-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .portada-stat-num { font-size: 1.8rem; font-weight: 500; color: var(--primary); line-height: 1; }
+  .portada-stat-label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; }
+  .portada-stat-sep { width: 1px; height: 40px; background: var(--border); }
+  .portada-botons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .portada-btn-principal {
+    background: var(--primary);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+  }
+  .portada-btn-principal:hover { background: #3d0614; transform: translateY(-1px); }
+  .portada-btn-secundari {
+    background: var(--surface);
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    padding: 12px 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+  }
+  .portada-btn-secundari:hover { background: var(--surface2); }
+  .portada-stat-link {
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 0.4rem 0.75rem;
+    transition: var(--transition);
+  }
+  .portada-stat-link:hover { background: rgba(92,10,30,0.07); }
+  .portada-stat-link:hover .portada-stat-num { color: var(--primary); }
+
+  .portada-novetats {
+    background: var(--surface);
+    border: 1.5px solid #c97d8a;
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+    margin: -0.2rem 3px 1.2rem;
+    text-align: left;
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .portada-novetats ol { padding-left: 1.2rem; margin: 0.4rem 0; }
+  .portada-novetats li { margin-bottom: 0.2rem; }
+  .portada-novetats p { margin: 0.4rem 0; }
+  .novetats-titol {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+  .novetats-btn-tancar {
+    display: block;
+    width: 100%;
+    padding: 0.55rem 1rem;
+    border-radius: 20px;
+    border: 1.5px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: 0.5rem;
+  }
+  .novetats-btn-tancar:hover { background: var(--primary); color: #fff; }
+
+  /* ── LIGHTBOX ── */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    touch-action: none;
+  }
+  .lightbox-overlay.actiu { display: flex; }
+  .lightbox-img {
+    max-width: 94vw;
+    max-height: 88vh;
+    border-radius: 8px;
+    object-fit: contain;
+    user-select: none;
+    transform-origin: center center;
+    transition: transform 0.1s;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 14px; right: 18px;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.8;
+    z-index: 10000;
+  }
+  .lightbox-close:hover { opacity: 1; }
+  .lightbox-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 2.2rem;
+    cursor: pointer;
+    opacity: 0.6;
+    padding: 0.5rem;
+    z-index: 10000;
+    user-select: none;
+  }
+  .lightbox-nav:hover { opacity: 1; }
+  .lightbox-nav.prev { left: 10px; }
+  .lightbox-nav.next { right: 10px; }
+  .lightbox-nav.ocult { display: none; }
+  .lightbox-counter {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .card-galeria-foto { cursor: zoom-in; }
+
+  /* ── CELEBRACIÓ ── */
+  .celebracio-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .celebracio-overlay.actiu { display: flex; }
+  .celebracio-box {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 2rem 2rem 1.5rem;
+    text-align: center;
+    max-width: 320px;
+    width: 88%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    position: relative;
+    z-index: 1;
+  }
+  .celebracio-emoji { font-size: 3rem; margin-bottom: 0.5rem; }
+  .celebracio-text {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.4;
+    margin-bottom: 1.2rem;
+  }
+  .celebracio-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.6rem 1.6rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .celebracio-btn:hover { background: #7c0a2e; }
+  .confeti-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .portada-peu {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    width: 100%;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* RESPONSIU */
+  @media (max-width: 640px) {
+    header { padding: 0 1rem; }
+    main { padding: 1.25rem 1rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: 1; }
+    .tutorials-grid { grid-template-columns: 1fr; }
+    .stats-bar { gap: 1rem; }
+    .search-box { margin-left: 0; width: 100%; }
+    .search-box input { width: 100%; }
+    .filters-bar { gap: 0.4rem; }
+    .logo span { display: none; }
+  }
+  /* PANTALLA CONTRASENYA */
+  .password-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .password-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    box-shadow: var(--shadow-lg);
+    max-width: 340px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .password-logo {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+  }
+  .password-titol {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text);
+  }
+  .password-subtitol {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: -0.5rem;
+  }
+  .password-input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.1rem;
+    text-align: center;
+    letter-spacing: 0.2em;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: var(--transition);
+  }
+  .password-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(92,10,30,0.08);
+  }
+  .password-error {
+    font-size: 0.82rem;
+    color: var(--danger);
+    min-height: 1.2em;
+  }
+  .password-overlay.hidden {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- PANTALLA CONTRASENYA -->
+<div class="password-overlay" id="password-overlay">
+  <div class="password-box">
+    <div class="password-logo"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgcm9sZT0iaW1nIj4KICA8dGl0bGU+TnVza2EgbG9nbyBmaW5hbDwvdGl0bGU+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIyNDUiIGZpbGw9IiM1YzBhMWUiLz4KICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjIyMSIgZmlsbD0iI2Y0ZWZlOCIvPgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTk2IiBmaWxsPSIjNWMwYTFlIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIxNzgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y0ZWZlOCIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuMjIiLz4KICA8IS0tIFB1bnRzIGEgNDXCsCBzb2JyZSBsYSBmcmFuamEgYmVpeCAocuKJiDIwOCwgb2Zmc2V0PTIwOCpzaW40NeKJiDE0NykgLS0+CiAgPGNpcmNsZSBjeD0iMTA5IiBjeT0iMTA5IiByPSI3IiBmaWxsPSIjNWMwYTFlIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPGNpcmNsZSBjeD0iNDAzIiBjeT0iMTA5IiByPSI3IiBmaWxsPSIjNWMwYTFlIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPGNpcmNsZSBjeD0iMTA5IiBjeT0iNDAzIiByPSI3IiBmaWxsPSIjNWMwYTFlIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPGNpcmNsZSBjeD0iNDAzIiBjeT0iNDAzIiByPSI3IiBmaWxsPSIjNWMwYTFlIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPHRleHQgeD0iMjU2IiB5PSIyNTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIgogICAgICAgIGZvbnQtZmFtaWx5PSInTGlicmUgQmFza2VydmlsbGUnLCBHZW9yZ2lhLCBzZXJpZiIKICAgICAgICBmb250LXNpemU9IjI4MCIgZm9udC13ZWlnaHQ9IjQwMCIgZm9udC1zdHlsZT0iaXRhbGljIgogICAgICAgIGZpbGw9IiNmNGVmZTgiIGxldHRlci1zcGFjaW5nPSItNiI+TjwvdGV4dD4KPC9zdmc+Cg==" alt="Nuska" style="height:72px;width:72px;border-radius:50%"></div>
+    <div class="password-titol">Nuska</div>
+    <p class="password-subtitol">Introdueix la contrasenya per entrar</p>
+    <input class="password-input" id="password-input" type="password" placeholder="····" maxlength="20"
+      onkeydown="if(event.key==='Enter') verificarPassword()">
+    <button class="btn btn-primary" style="width:100%" onclick="verificarPassword()">Entrar</button>
+    <div class="password-error" id="password-error"></div>
+  </div>
+</div>
+
+<header>
+  <div class="logo">
+    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgcm9sZT0iaW1nIj4KICA8dGl0bGU+TnVza2EgbG9nbyBmaW5hbDwvdGl0bGU+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIyNDUiIGZpbGw9IiM1YzBhMWUiLz4KICA8Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjIyMSIgZmlsbD0iI2Y0ZWZlOCIvPgogIDxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgcj0iMTk2IiBmaWxsPSIjNWMwYTFlIi8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIxNzgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Y0ZWZlOCIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuMjIiLz4KICA8IS0tIFB1bnRzIGEgNDXCsCBzb2JyZSBsYSBmcmFuamEgYmVpeCAocuKJiDIwOCwgb2Zmc2V0PTIwOCpzaW40NeKJiDE0NykgLS0+CiAgPGNpcmNsZSBjeD0iMTA5IiBjeT0iMTA5IiByPSI3IiBmaWxsPSIjNWMwYTFlIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPGNpcmNsZSBjeD0iNDAzIiBjeT0iMTA5IiByPSI3IiBmaWxsPSIjNWMwYTFlIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPGNpcmNsZSBjeD0iMTA5IiBjeT0iNDAzIiByPSI3IiBmaWxsPSIjNWMwYTFlIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPGNpcmNsZSBjeD0iNDAzIiBjeT0iNDAzIiByPSI3IiBmaWxsPSIjNWMwYTFlIiBvcGFjaXR5PSIwLjY1Ii8+CiAgPHRleHQgeD0iMjU2IiB5PSIyNTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIgogICAgICAgIGZvbnQtZmFtaWx5PSInTGlicmUgQmFza2VydmlsbGUnLCBHZW9yZ2lhLCBzZXJpZiIKICAgICAgICBmb250LXNpemU9IjI4MCIgZm9udC13ZWlnaHQ9IjQwMCIgZm9udC1zdHlsZT0iaXRhbGljIgogICAgICAgIGZpbGw9IiNmNGVmZTgiIGxldHRlci1zcGFjaW5nPSItNiI+TjwvdGV4dD4KPC9zdmc+Cg==" alt="Nuska" style="height:32px;width:32px;border-radius:50%;display:inline-block;vertical-align:middle">
+    Nuska
+  </div>
+  <nav>
+    <button class="nav-btn active" onclick="showView('inici')">Inici</button>
+    <button class="nav-btn" onclick="showView('biblioteca')">Biblioteca</button>
+    <button class="nav-btn" onclick="showView('afegir')">Afegir tutorial</button>
+  </nav>
+</header>
+
+<main>
+
+  <!-- VISTA INICI -->
+  <div class="view active" id="view-inici">
+    <div class="portada-inici">
+      <div class="portada-data" id="portada-data"></div>
+      <h1 class="portada-titol">Benvinguda, <span class="portada-nom">Nuska!</span></h1>
+      <p class="portada-frase" id="portada-frase"></p>
+      <div class="portada-stats-row">
+        <div class="portada-stat portada-stat-link" onclick="anarABiblioteca('tots')" title="Veure tots els tutorials">
+          <span class="portada-stat-num" id="p-stat-total">—</span>
+          <span class="portada-stat-label">tutorials</span>
+        </div>
+        <div class="portada-stat-sep"></div>
+        <div class="portada-stat portada-stat-link" onclick="anarABiblioteca('fets')" title="Veure tutorials fets">
+          <span class="portada-stat-num" id="p-stat-fets">—</span>
+          <span class="portada-stat-label">fets</span>
+        </div>
+        <div class="portada-stat-sep"></div>
+        <div class="portada-stat portada-stat-link" onclick="anarABiblioteca('tots')" title="Veure la biblioteca">
+          <span class="portada-stat-num" id="p-stat-cats">—</span>
+          <span class="portada-stat-label">categories</span>
+        </div>
+      </div>
+      <div class="portada-novetats" id="portada-novetats" style="display:none">
+        <div class="novetats-contingut">
+          <div class="novetats-titol">Atenció, atencióoo!</div>
+          <p><strong>NOVETATS de la versió 4 d'aquesta súper aplicació</strong> ;)</p>
+          <p>Per aclamació popular, hem fet que...</p>
+          <ol>
+            <li>A la pantalla inicial ja hi funcionen els links dels comptadors.</li>
+            <li>Enlloc de "Intenció" posa "Estat".</li>
+            <li>Els botons de categories tenen més contrast i la tipografia una mica més gran.</li>
+            <li>La categoria "Bosses i bolsos"… ja són dues categories separades!</li>
+            <li>La categoria "Samarretes…" ara ja es diu "Trucs"!</li>
+            <li>Si cliques a les fotos, les veuràs grans.</li>
+            <li>I alguna sorpreseta... ;)</li>
+          </ol>
+          <p>Espero que aquests canvis et siguin molt útils!</p>
+          <p>I recorda, ves anotant-te coses que milloraries, per tal que ho pugui implementar!</p>
+          <p style="margin-bottom:0.75rem">Petoneeets!</p>
+          <button class="novetats-btn-tancar" onclick="tancarNovetats()">✓ Ja ho he llegit, no me les tornis a mostrar</button>
+        </div>
+      </div>
+      <div class="portada-botons">
+        <button class="portada-btn-principal" onclick="showViewDirect('biblioteca')">
+          <i class="ti ti-books" aria-hidden="true"></i>
+          Anar a la biblioteca
+        </button>
+        <button class="portada-btn-secundari" onclick="showViewDirect('afegir')">
+          <i class="ti ti-plus" aria-hidden="true"></i>
+          Afegir tutorial
+        </button>
+      </div>
+      <p class="portada-peu" id="portada-peu"></p>
+    </div>
+  </div>
+
+  <!-- VISTA BIBLIOTECA -->
+  <div class="view" id="view-biblioteca">
+    <div class="page-header">
+      <h1 class="page-title">La meva biblioteca</h1>
+      <p class="page-subtitle">Tots els tutorials guardats</p>
+    </div>
+
+    <div id="stats-bar" class="stats-bar" style="display:none">
+      <div class="stat stat-clickable" onclick="filtrarPerStat('tots')" title="Veure tots">
+        <span class="stat-value" id="stat-total">0</span>
+        <span class="stat-label">Tutorials</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat stat-clickable" onclick="filtrarPerStat('fets')" title="Veure fets">
+        <span class="stat-value" id="stat-fets">0</span>
+        <span class="stat-label">Fets</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat stat-clickable" onclick="filtrarPerStat('pendents')" title="Veure pendents">
+        <span class="stat-value" id="stat-pendents">0</span>
+        <span class="stat-label">Pendents</span>
+      </div>
+    </div>
+
+    <div class="filters-bar">
+      <span class="filter-label">Categoria:</span>
+      <button class="filter-chip active" data-cat="tots" onclick="setFilter('tots', this)">Tots</button>
+      <button class="filter-chip" data-cat="Bosses" onclick="setFilter('Bosses', this)">Bosses</button>
+      <button class="filter-chip" data-cat="Bolsos" onclick="setFilter('Bolsos', this)">Bolsos</button>
+      <button class="filter-chip" data-cat="moneders" onclick="setFilter('moneders', this)">Moneders</button>
+      <button class="filter-chip" data-cat="necessers" onclick="setFilter('necessers', this)">Necessers</button>
+      <button class="filter-chip" data-cat="Trucs" onclick="setFilter('Trucs', this)">Trucs</button>
+      <button class="filter-chip" data-cat="altres" onclick="setFilter('altres', this)">Altres</button>
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Cercar..." oninput="renderTutorials()">
+      </div>
+    </div>
+    <div class="filters-bar" style="margin-top:0.4rem">
+      <span class="filter-label">Estat:</span>
+      <button class="filter-chip active" data-intencio="totes" onclick="setFiltreIntencio('totes', this)">Totes</button>
+      <button class="filter-chip" data-intencio="en curs" onclick="setFiltreIntencio('en curs', this)">En curs</button>
+      <button class="filter-chip" data-intencio="propera costura" onclick="setFiltreIntencio('propera costura', this)">Propera costura</button>
+      <button class="filter-chip" data-intencio="fets" onclick="setFiltreIntencio('fets', this)">Fets</button>
+      <button class="filter-chip" data-intencio="pendents" onclick="setFiltreIntencio('pendents', this)">Pendents</button>
+      <div style="margin-left:auto;display:flex;gap:4px;">
+        <button id="btn-vista-cards" class="btn-vista active" onclick="setVista('cards')" title="Vista cards"><i class="ti ti-layout-cards" style="font-size:16px" aria-hidden="true"></i></button>
+        <button id="btn-vista-llista" class="btn-vista" onclick="setVista('llista')" title="Vista llista"><i class="ti ti-list" style="font-size:16px" aria-hidden="true"></i></button>
+      </div>
+    </div>
+
+    <div id="tutorials-container">
+      <div class="loading">
+        <div class="spinner"></div><br>Carregant tutorials...
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA AFEGIR -->
+  <div class="view" id="view-afegir">
+    <div class="page-header">
+      <h1 class="page-title">Afegir tutorial</h1>
+      <p class="page-subtitle">Guarda un nou tutorial de YouTube</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="f-nom">Nom</label>
+          <input type="text" id="f-nom" placeholder="p.ex. Bossa tote de lona">
+        </div>
+        <div class="form-group">
+          <label for="f-categoria">Categoria</label>
+          <select id="f-categoria">
+            <option value="">— Selecciona —</option>
+            <option value="Bosses">Bosses</option>
+            <option value="Bolsos">Bolsos</option>
+            <option value="moneders">Moneders</option>
+            <option value="necessers">Necessers</option>
+            <option value="Trucs">Trucs</option>
+            <option value="altres">Altres</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="f-nom-video">Nom del vídeo</label>
+          <input type="text" id="f-nom-video" placeholder="Títol del vídeo a YouTube">
+        </div>
+        <div class="form-group">
+          <label for="f-canal">Canal de YT (autoria)</label>
+          <input type="text" id="f-canal" placeholder="Nom del canal">
+        </div>
+        <div class="form-group">
+          <label for="f-url">URL del vídeo</label>
+          <input type="url" id="f-url" placeholder="https://youtube.com/..." onblur="detectarInfoVideo()">
+          <div id="f-url-status" style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;min-height:1.2em;"></div>
+        </div>
+        <div class="form-group full">
+          <label>Ja l'he fet?</label>
+          <div class="checkbox-row">
+            <input type="checkbox" id="f-feta">
+            <span>Sí, ja he fet aquest tutorial</span>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label for="f-comentari">Comentari personal</label>
+          <textarea id="f-comentari" placeholder="Notes, impressions, dificultat..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" id="btn-guardar" onclick="guardarTutorial()">Guardar tutorial</button>
+        <button class="btn btn-secondary" onclick="netejarFormulari()">Netejar</button>
+      </div>
+      <div class="status-msg" id="status-afegir"></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL ACTUALITZAR -->
+<div class="modal-overlay" id="modal-actualitzar">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="actualitzar-titol"></h2>
+      <button class="modal-close" onclick="tancarModalActualitzar()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Intenció</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+          <button class="chip-intencio" data-val="" onclick="seleccionarIntencio(this)">Cap</button>
+          <button class="chip-intencio" data-val="pendent" onclick="seleccionarIntencio(this)">Pendent</button>
+          <button class="chip-intencio" data-val="en curs" onclick="seleccionarIntencio(this)">En curs</button>
+          <button class="chip-intencio" data-val="propera costura" onclick="seleccionarIntencio(this)">Propera costura</button>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:1rem">
+        <label for="act-nota">Nota de sessió</label>
+        <textarea id="act-nota" rows="2" placeholder="p.ex. vaig fins al minut 14, talla M per la tieta Rosa"></textarea>
+      </div>
+      <div class="form-group" style="margin-top:1rem">
+        <label>Valoració</label>
+        <div class="star-rating" id="act-stars" style="margin-top:6px">
+          <span class="star" data-v="1">★</span>
+          <span class="star" data-v="2">★</span>
+          <span class="star" data-v="3">★</span>
+          <span class="star" data-v="4">★</span>
+          <span class="star" data-v="5">★</span>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:1rem">
+        <label>Vegades fet</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:6px">
+          <button class="btn btn-secondary" onclick="canviarVegades(-1)" style="width:32px;height:32px;padding:0;font-size:1.2rem">−</button>
+          <span id="act-vegades-num" style="font-size:1.4rem;font-weight:500;min-width:24px;text-align:center">0</span>
+          <button class="btn btn-secondary" onclick="canviarVegades(1)" style="width:32px;height:32px;padding:0;font-size:1.2rem">+</button>
+          <span style="font-size:0.85rem;color:var(--text-muted)">vegades</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-secondary" onclick="tancarModalActualitzar()">Cancel·lar</button>
+      <button class="btn btn-primary" onclick="guardarActualitzacio()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDICIÓ -->
+<div class="modal-overlay" id="modal-edicio">
+  <div class="modal">
+    <h2 class="modal-title">Editar tutorial</h2>
+    <input type="hidden" id="edit-nom-original">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="edit-nom">Nom</label>
+        <input type="text" id="edit-nom">
+      </div>
+      <div class="form-group">
+        <label for="edit-categoria">Categoria</label>
+        <select id="edit-categoria">
+          <option value="">— Selecciona —</option>
+          <option value="Bosses">Bosses</option>
+          <option value="Bolsos">Bolsos</option>
+          <option value="moneders">Moneders</option>
+          <option value="necessers">Necessers</option>
+          <option value="Trucs">Trucs</option>
+          <option value="altres">Altres</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label for="edit-nom-video">Nom del vídeo</label>
+        <input type="text" id="edit-nom-video">
+      </div>
+      <div class="form-group">
+        <label for="edit-canal">Canal de YT</label>
+        <input type="text" id="edit-canal">
+      </div>
+      <div class="form-group">
+        <label for="edit-url">URL del vídeo</label>
+        <input type="url" id="edit-url">
+      </div>
+      <div class="form-group full">
+        <label>Ja l'he fet?</label>
+        <div class="checkbox-row">
+          <input type="checkbox" id="edit-feta">
+          <span>Sí, ja he fet aquest tutorial</span>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label for="edit-comentari">Comentari personal</label>
+        <textarea id="edit-comentari"></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" id="btn-editar" onclick="guardarEdicio()">Guardar canvis</button>
+      <button class="btn btn-secondary" onclick="tancarModal()">Cancel·lar</button>
+      <button class="btn btn-danger" id="btn-eliminar-modal" onclick="eliminarDesDeModal()">Eliminar tutorial</button>
+    </div>
+    <div class="status-msg" id="status-edicio"></div>
+  </div>
+</div>
+
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbydWUhDJAgTuFKqQahxFyola0rs42bQAxORa_7NrGIzr5lv5su5YsmpcBbCbzD7M1mZoA/exec';
+
+  // CONTRASENYA
+  let autenticat = false;
+
+  (function() {
+    if (sessionStorage.getItem('nuska_auth')) {
+      autenticat = true;
+      document.getElementById('password-overlay').classList.add('hidden');
+      carregarTutorials().then(actualitzarPortadaStats);
+    } else {
+      document.getElementById('password-input').focus();
+    }
+  })();
+
+  function verificarPassword() {
+    const val = document.getElementById('password-input').value;
+    if (val === '4030') {
+      autenticat = true;
+      sessionStorage.setItem('nuska_auth', '1');
+      document.getElementById('password-overlay').classList.add('hidden');
+      carregarTutorials().then(actualitzarPortadaStats);
+    } else {
+      document.getElementById('password-error').textContent = 'Contrasenya incorrecta. Torna-ho a intentar.';
+      document.getElementById('password-input').value = '';
+      document.getElementById('password-input').focus();
+    }
+  }
+
+  let tutorials = [];
+  let filtreActiu = 'tots';
+  let filtreIntencio = 'totes';
+  let vistaActual = 'cards';
+  let filesObertes = new Set();
+
+  function setVista(v) {
+    vistaActual = v;
+    document.getElementById('btn-vista-cards').classList.toggle('active', v === 'cards');
+    document.getElementById('btn-vista-llista').classList.toggle('active', v === 'llista');
+    renderTutorials();
+    renderTutorials();
+  }
+  let nomActualitzant = '';
+
+  // NAVEGACIÓ
+  function showView(view) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('view-' + view).classList.add('active');
+    event.target.classList.add('active');
+    if (view === 'biblioteca') carregarTutorials();
+    history.pushState({ view }, '', '');
+  }
+
+  function showViewDirect(view) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('view-' + view).classList.add('active');
+    const btn = document.querySelector(`.nav-btn[onclick="showView('${view}')"]`);
+    if (btn) btn.classList.add('active');
+    history.pushState({ view }, '', '');
+    if (view === 'biblioteca') return carregarTutorials();
+    return Promise.resolve();
+  }
+
+  // Botó enrere del mòbil
+  history.pushState({ view: 'inici' }, '', '');
+  window.addEventListener('popstate', () => {
+    if (document.getElementById('lightbox').classList.contains('actiu')) {
+      tancarLightbox(); history.pushState({}, '', ''); return;
+    }
+    if (document.getElementById('celebracio-overlay').classList.contains('actiu')) {
+      tancarCelebracio(); history.pushState({}, '', ''); return;
+    }
+    if (document.getElementById('modal-edicio').classList.contains('open')) {
+      tancarModal(); history.pushState({}, '', ''); return;
+    }
+    const vistaActiva = document.querySelector('.view.active');
+    if (vistaActiva && vistaActiva.id !== 'view-inici') {
+      showViewDirect('inici'); return;
+    }
+  });
+
+  function anarABiblioteca(filtre) {
+    showViewDirect('biblioteca').then(() => {
+      if (filtre === 'fets' || filtre === 'pendents') {
+        filtreIntencio = filtre;
+        document.querySelectorAll('[data-intencio]').forEach(c => c.classList.remove('active'));
+        document.querySelector(`[data-intencio="${filtre}"]`)?.classList.add('active');
+        document.querySelectorAll('.stat-clickable').forEach(s => s.classList.remove('actiu'));
+        const idx = { fets: 1, pendents: 2 }[filtre];
+        document.querySelectorAll('.stat-clickable')[idx]?.classList.add('actiu');
+      } else {
+        filtreIntencio = 'totes';
+        document.querySelectorAll('[data-intencio]').forEach(c => c.classList.remove('active'));
+        document.querySelector('[data-intencio="totes"]')?.classList.add('active');
+      }
+      renderTutorials();
+    });
+  }
+
+  function tancarNovetats() {
+    localStorage.setItem('nuska_novetats_v4_5_llegit', '1');
+    document.getElementById('portada-novetats').style.display = 'none';
+  }
+
+  // ── CELEBRACIÓ ──
+  const FRASES_CELEBRACIO = {
+    40: "Ja has introduït 40 tutorials! Molt bé, mama!!",
+    50: "Eiii, ja portes 50 tutorials! Vas bé, mama, vinga, no paris!!",
+    60: "Toma yaaa! 60 tutorials! Estàs en ratxa, mama!!",
+    70: "Oleee mama! Ja tens 70 tutorials! Viiinga!",
+    80: "Uala! Súper màquina! Ja has arribat als 80 tutorials, enhorabona mama!!",
+    81: "Si vols més frases d'aquestes, avisa'm, que te'n posaré més! Hehehe!"
+  };
+
+  function comprovarCelebracio(total) {
+    const frase = FRASES_CELEBRACIO[total];
+    if (!frase) return;
+    document.getElementById('celebracio-text').textContent = frase;
+    document.getElementById('celebracio-overlay').classList.add('actiu');
+    if (total !== 81) llançarConfeti();
+  }
+
+  function tancarCelebracio() {
+    document.getElementById('celebracio-overlay').classList.remove('actiu');
+    if (confettiAnim) { cancelAnimationFrame(confettiAnim); confettiAnim = null; }
+    const canvas = document.getElementById('confeti-canvas');
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function llançarConfeti() {
+    const canvas = document.getElementById('confeti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const colors = ['var(--primary)','#e8a0b0','#f4c842','#4a90d9','#7bc67e','#f4efe8'];
+    const particles = Array.from({length: 120}, () => ({
+      x: Math.random() * canvas.width,
+      y: -10 - Math.random() * 100,
+      r: 4 + Math.random() * 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      vx: (Math.random() - 0.5) * 3,
+      vy: 2 + Math.random() * 3,
+      rot: Math.random() * 360,
+      rotV: (Math.random() - 0.5) * 6
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot * Math.PI / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.5);
+        ctx.restore();
+        p.x += p.vx; p.y += p.vy; p.rot += p.rotV;
+      });
+      if (particles.some(p => p.y < canvas.height + 20)) {
+        confettiAnim = requestAnimationFrame(draw);
+      } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+    draw();
+  }
+
+  // ── LIGHTBOX ──
+  let lbFotos = [], lbIdx = 0;
+  let lbZoom = 1, lbPanX = 0, lbPanY = 0;
+  let lbPinchDist = null;
+  let lbSwipeX = null, lbSwipeY = null;
+
+  function obrirLightbox(img) {
+    const wrap = img.closest('.card-galeria-fotos');
+    const totes = wrap ? Array.from(wrap.querySelectorAll('.card-galeria-foto')) : [img];
+    lbFotos = totes.map(i => i.src);
+    lbIdx = totes.indexOf(img);
+    if (lbIdx < 0) lbIdx = 0;
+    lbZoom = 1; lbPanX = 0; lbPanY = 0;
+    actualitzarLightbox();
+    document.getElementById('lightbox').classList.add('actiu');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function tancarLightbox() {
+    document.getElementById('lightbox').classList.remove('actiu');
+    document.body.style.overflow = '';
+    lbZoom = 1; lbPanX = 0; lbPanY = 0;
+    aplicarTransformLb();
+  }
+
+  function actualitzarLightbox() {
+    const imgEl = document.getElementById('lightbox-img');
+    imgEl.src = lbFotos[lbIdx];
+    imgEl.style.transform = 'scale(1) translate(0px, 0px)';
+    lbZoom = 1; lbPanX = 0; lbPanY = 0;
+    document.getElementById('lb-prev').classList.toggle('ocult', lbFotos.length <= 1 || lbIdx === 0);
+    document.getElementById('lb-next').classList.toggle('ocult', lbFotos.length <= 1 || lbIdx === lbFotos.length - 1);
+    document.getElementById('lb-counter').textContent = lbFotos.length > 1 ? `${lbIdx + 1} / ${lbFotos.length}` : '';
+  }
+
+  function lightboxNav(dir) {
+    lbIdx = Math.max(0, Math.min(lbFotos.length - 1, lbIdx + dir));
+    actualitzarLightbox();
+  }
+
+  function lightboxClickFora(e) {
+    if (e.target === document.getElementById('lightbox')) tancarLightbox();
+  }
+
+  function aplicarTransformLb() {
+    document.getElementById('lightbox-img').style.transform = `scale(${lbZoom}) translate(${lbPanX}px, ${lbPanY}px)`;
+  }
+
+  // Teclat
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('actiu')) return;
+    if (e.key === 'Escape') tancarLightbox();
+    if (e.key === 'ArrowLeft') lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+  });
+
+  // Touch events (swipe + pinch)
+  const lbImg = document.getElementById('lightbox-img');
+
+  lbImg.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      lbPinchDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+    } else if (e.touches.length === 1) {
+      lbSwipeX = e.touches[0].clientX;
+      lbSwipeY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  lbImg.addEventListener('touchmove', e => {
+    if (e.touches.length === 2 && lbPinchDist !== null) {
+      e.preventDefault();
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      lbZoom = Math.min(5, Math.max(1, lbZoom * (dist / lbPinchDist)));
+      lbPinchDist = dist;
+      aplicarTransformLb();
+    } else if (e.touches.length === 1 && lbZoom > 1) {
+      e.preventDefault();
+      lbPanX += (e.touches[0].clientX - lbSwipeX) / lbZoom;
+      lbPanY += (e.touches[0].clientY - lbSwipeY) / lbZoom;
+      lbSwipeX = e.touches[0].clientX;
+      lbSwipeY = e.touches[0].clientY;
+      aplicarTransformLb();
+    }
+  }, { passive: false });
+
+  // Swipe i doble tap fusionats en un sol listener
+  let lbLastTap = 0;
+  lbImg.addEventListener('touchend', e => {
+    lbPinchDist = null;
+    if (e.changedTouches.length !== 1) return;
+
+    const now = Date.now();
+    const dx = lbSwipeX !== null ? e.changedTouches[0].clientX - lbSwipeX : 0;
+
+    if (now - lbLastTap < 300) {
+      // Doble tap → resetar zoom
+      lbZoom = 1; lbPanX = 0; lbPanY = 0;
+      aplicarTransformLb();
+      lbLastTap = 0;
+    } else {
+      // Swipe → canviar foto (només si no hi ha zoom actiu)
+      if (lbZoom <= 1 && lbSwipeX !== null && Math.abs(dx) > 50) {
+        lightboxNav(dx < 0 ? 1 : -1);
+      }
+      lbLastTap = now;
+    }
+  }, { passive: true });
+
+  function inicialitzarPortada() {
+    if (!localStorage.getItem('nuska_novetats_v4_5_llegit')) {
+      document.getElementById('portada-novetats').style.display = 'block';
+    }
+    const dies = ['diumenge','dilluns','dimarts','dimecres','dijous','divendres','dissabte'];
+    const mesos = ['de gener','de febrer','de març','d\'abril','de maig','de juny','de juliol','d\'agost','de setembre','d\'octubre','de novembre','de desembre'];
+    const ara = new Date();
+    const text = `${dies[ara.getDay()]}, ${ara.getDate()} ${mesos[ara.getMonth()]} de ${ara.getFullYear()}`;
+    document.getElementById('portada-data').textContent = text;
+
+    const frases = [
+      'Preparada per explorar i crear?',
+      'Preparada per explorar i crear?',
+      'Preparada per explorar i crear?',
+      'Vinga, entra algun tutorial més!',
+      'Toqueteja una mica més l\'app, i em dius! ;)'
+    ];
+    let idx = 0;
+    try { idx = parseInt(localStorage.getItem('nuska-frase-idx') || '0') % frases.length; } catch(e) {}
+    document.getElementById('portada-frase').textContent = frases[idx];
+    try { localStorage.setItem('nuska-frase-idx', (idx + 1) % frases.length); } catch(e) {}
+  }
+
+  function actualitzarPortadaStats() {
+    document.getElementById('p-stat-total').textContent = tutorials.length || '—';
+    const fets = tutorials.filter(t => t['feta?'] === 'si' || t['feta?'] === 'sí' || t['feta?'] === 'true').length;
+    document.getElementById('p-stat-fets').textContent = tutorials.length ? fets : '—';
+    const cats = new Set(tutorials.map(t => t['categoria']).filter(Boolean)).size;
+    document.getElementById('p-stat-cats').textContent = tutorials.length ? cats : '—';
+    const ultim = tutorials[tutorials.length - 1];
+    if (ultim) {
+      document.getElementById('portada-peu').textContent = 'Últim tutorial afegit: ' + (ultim['nom'] || ultim['nom del vídeo'] || '—');
+    }
+  }
+
+  // CARREGAR TUTORIALS
+  async function carregarTutorials() {
+    const container = document.getElementById('tutorials-container');
+    if (container) container.innerHTML = '<div class="loading"><div class="spinner"></div><br>Carregant tutorials...</div>';
+    try {
+      const res = await fetch(API_URL);
+      tutorials = await res.json();
+      actualitzarStats();
+      actualitzarPortadaStats();
+      renderTutorials();
+    } catch (err) {
+      console.error('Error:', err);
+      if (container) container.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error de connexió</div><div class="empty-text">' + (err.message || String(err)) + '</div></div>';
+    }
+  }
+
+  function actualitzarStats() {
+    const total = tutorials.length;
+    const fets = tutorials.filter(t => t['feta?'] === 'si' || t['feta?'] === 'sí' || t['feta?'] === 'true').length;
+    document.getElementById('stat-total').textContent = total;
+    document.getElementById('stat-fets').textContent = fets;
+    const pendents = tutorials.filter(t => (t['intencio'] || '').toLowerCase().trim() === 'pendent').length;
+    document.getElementById('stat-pendents').textContent = pendents;
+    document.getElementById('stats-bar').style.display = total > 0 ? 'flex' : 'none';
+  }
+
+  function filtrarPerStat(tipus) {
+    // Actualitzar estat visual dels stats
+    document.querySelectorAll('.stat-clickable').forEach(s => s.classList.remove('actiu'));
+    const idx = { tots: 0, fets: 1, pendents: 2 }[tipus];
+    document.querySelectorAll('.stat-clickable')[idx]?.classList.add('actiu');
+
+    // Activar el filtre d'intenció corresponent
+    if (tipus === 'fets') {
+      filtreIntencio = 'fets';
+      document.querySelectorAll('[data-intencio]').forEach(c => c.classList.remove('active'));
+      document.querySelector('[data-intencio="fets"]')?.classList.add('active');
+    } else if (tipus === 'pendents') {
+      filtreIntencio = 'pendents';
+      document.querySelectorAll('[data-intencio]').forEach(c => c.classList.remove('active'));
+      document.querySelector('[data-intencio="pendents"]')?.classList.add('active');
+    } else {
+      filtreIntencio = 'totes';
+      document.querySelectorAll('[data-intencio]').forEach(c => c.classList.remove('active'));
+      document.querySelector('[data-intencio="totes"]')?.classList.add('active');
+    }
+    renderTutorials();
+  }
+
+  function setFilter(cat, btn) {
+    filtreActiu = cat;
+    document.querySelectorAll('[data-cat]').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.stat-clickable').forEach(s => s.classList.remove('actiu'));
+    renderTutorials();
+  }
+
+  function renderTutorials() {
+    const cerca = document.getElementById('search-input').value.toLowerCase();
+    let filtrats = tutorials.filter(t => {
+      const coincideixCat = filtreActiu === 'tots' || t['categoria'] === filtreActiu;
+      const coincideixCerca = !cerca ||
+        (t['nom'] || '').toLowerCase().includes(cerca) ||
+        (t['nom del vídeo'] || '').toLowerCase().includes(cerca) ||
+        (t['canal de YT (autoria)'] || '').toLowerCase().includes(cerca);
+      const intencioT = (t['intencio'] || '').toLowerCase().trim();
+      const feta = t['feta?'] === 'si' || t['feta?'] === 'sí' || t['feta?'] === 'true';
+      const coincideixIntencio = filtreIntencio === 'totes' ||
+        (filtreIntencio === 'fets' && feta) ||
+        (filtreIntencio === 'pendents' && intencioT === 'pendent') ||
+        (filtreIntencio !== 'fets' && filtreIntencio !== 'pendents' && intencioT === filtreIntencio);
+      return coincideixCat && coincideixCerca && coincideixIntencio;
+    });
+
+    const container = document.getElementById('tutorials-container');
+    if (!container) return;
+
+    if (filtrats.length === 0) {
+      container.innerHTML = `<div class="empty-state">
+        <div class="empty-icon">🧵</div>
+        <div class="empty-title">${tutorials.length === 0 ? 'Encara no hi ha tutorials' : 'Cap resultat'}</div>
+        <div class="empty-text">${tutorials.length === 0 ? 'Afegeix el primer tutorial amb el botó de dalt.' : 'Prova amb altres filtres o una cerca diferent.'}</div>
+      </div>`;
+      return;
+    }
+
+    container.innerHTML = vistaActual === 'llista'
+      ? `<div class="tutorials-llista">${filtrats.map((t, i) => filaHTML(t, i)).join('')}</div>`
+      : `<div class="tutorials-grid">${filtrats.map(t => cardHTML(t)).join('')}</div>`;
+
+    if (vistaActual === 'llista') {
+      filesObertes.forEach(id => {
+        const fila = document.getElementById(id);
+        const exp = document.getElementById('exp-' + id);
+        const chev = document.getElementById('chev-' + id);
+        if (fila && exp && chev) {
+          exp.classList.add('obert');
+          fila.classList.add('obert');
+          chev.style.transform = 'rotate(180deg)';
+        }
+      });
+    }
+  }
+
+  function ytVideoId(url) {
+    if (!url) return null;
+    const patterns = [
+      /[?&]v=([^&#]+)/,
+      /youtu\.be\/([^?&#]+)/,
+      /youtube\.com\/embed\/([^?&#]+)/,
+      /youtube\.com\/shorts\/([^?&#]+)/
+    ];
+    for (const p of patterns) {
+      const m = url.match(p);
+      if (m) return m[1];
+    }
+    return null;
+  }
+
+  function cardHTML(t) {
+    const feta = t['feta?'] === 'si' || t['feta?'] === 'sí' || t['feta?'] === 'true';
+    const intencio = (t['intencio'] || '').toLowerCase().trim();
+    const notaSessio = t['nota sessio'] || '';
+    const vegades = parseInt(t['vegades fet']) || 0;
+    const valoracio = parseInt(t['valoracio']) || 0;
+    const starsHTML = valoracio > 0 ? `<div class="card-stars">${[1,2,3,4,5].map(i => `<span class="${i <= valoracio ? 'star-on' : 'star-off'}">★</span>`).join('')}</div>` : '';
+    const url = t['url'] || '';
+    const comentari = t['comentari personal'] || '';
+    const nomEsc = escHTML(t['nom'] || '');
+    const nomVideoEsc = escHTML(t['nom del vídeo'] || '');
+    const canalEsc = escHTML(t['canal de YT (autoria)'] || '');
+    const catEsc = escHTML(t['categoria'] || '');
+    const videoId = ytVideoId(url);
+    const thumbHTML = videoId
+      ? `<a href="${escHTML(url)}" target="_blank"><img class="card-thumb" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="${nomVideoEsc}" loading="lazy"></a>`
+      : `<div class="card-thumb-placeholder">🎬</div>`;
+
+    const franjaColor = intencio === 'en curs' ? '#D97706' : intencio === 'propera costura' ? '#7C3AED' : feta ? '#059669' : 'var(--border)';
+
+    let pillsHTML = '';
+    if (intencio === 'en curs') pillsHTML += `<span class="pill-intencio encurs">En curs</span>`;
+    if (intencio === 'propera costura') pillsHTML += `<span class="pill-intencio proxima">Propera costura</span>`;
+    if (intencio === 'pendent') pillsHTML += `<span class="pill-intencio pendent">Pendent</span>`;
+    if (feta) pillsHTML += `<span class="pill-intencio feta">✓ Feta${vegades > 0 ? ` (${vegades})` : ''}</span>`;
+    // sense pill si no hi ha intenció ni feta
+
+    const vegadesText = vegades === 0 ? 'Encara no fet' : vegades === 1 ? 'Fet 1 vegada' : `Fet ${vegades} vegades`;
+
+    return `<div class="tutorial-card">
+      <div class="card-franja" style="background:${franjaColor}"></div>
+      ${thumbHTML}
+      <div class="card-header">
+        <div class="card-nom">${nomEsc}</div>
+      </div>
+      ${nomVideoEsc ? `<div class="card-video-nom">"${nomVideoEsc}"</div>` : ''}
+      <div class="card-meta">
+        ${catEsc ? `<div><span class="card-categoria">${catEsc}</span></div>` : ''}
+        ${canalEsc ? `<div class="card-meta-row"><span class="card-meta-icon">📺</span>${canalEsc}</div>` : ''}
+      </div>
+      <div class="card-pills-row">${pillsHTML}</div>
+      ${starsHTML}
+      ${notaSessio ? `<div class="card-nota-sessio">${escHTML(notaSessio)}</div>` : ''}
+
+      ${comentari ? `<div class="card-comentari">${escHTML(comentari)}</div>` : ''}
+      <div class="card-galeria">
+        <div class="card-galeria-label">Les meves fotos</div>
+        <div class="card-galeria-fotos" data-nom="${nomEsc}">
+          ${(t['fotos'] || '').split(',').filter(u => u.trim()).map(u => `<div class="card-galeria-foto-wrap"><img src="${u.trim()}" class="card-galeria-foto" loading="lazy" onclick="obrirLightbox(this)"><button class="card-galeria-delete" onclick="event.stopPropagation();eliminarFoto(this,'${nomEsc}','${u.trim()}')" title="Eliminar foto">✕</button></div>`).join('')}
+          <button class="card-galeria-add" onclick="afegirFoto(this)" title="Afegir foto">+</button>
+          <input type="file" accept="image/*" style="display:none" onchange="mostrarFoto(event, this)">
+        </div>
+      </div>
+      <div class="card-actions">
+        ${url ? `<a href="${escHTML(url)}" target="_blank" class="yt-link">▶ Veure vídeo</a>` : ''}
+        <button class="btn btn-edit" onclick='obrirEdicio(${JSON.stringify(t)})'>Editar</button>
+        <button class="btn btn-primary" style="font-size:0.8rem;padding:0.3rem 0.8rem" onclick='obrirActualitzar(${JSON.stringify(t)})'>Actualitzar</button>
+      </div>
+    </div>`;
+  }
+
+  function filaHTML(t, idx) {
+    const feta = t['feta?'] === 'si' || t['feta?'] === 'sí' || t['feta?'] === 'true';
+    const intencio = (t['intencio'] || '').toLowerCase().trim();
+    const notaSessio = t['nota sessio'] || '';
+    const vegades = parseInt(t['vegades fet']) || 0;
+    const valoracio = parseInt(t['valoracio']) || 0;
+    const url = t['url'] || '';
+    const comentari = t['comentari personal'] || '';
+    const nomEsc = escHTML(t['nom'] || '');
+    const catEsc = escHTML(t['categoria'] || '');
+    const canalEsc = escHTML(t['canal de YT (autoria)'] || '');
+    const nomVideoEsc = escHTML(t['nom del vídeo'] || '');
+    const videoId = ytVideoId(url);
+    const thumbHTML = videoId
+      ? `<a href="${escHTML(url)}" target="_blank" style="flex-shrink:0" onclick="event.stopPropagation()"><img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="${nomVideoEsc}" style="width:56px;height:32px;object-fit:cover;border-radius:4px;display:block;"></a>`
+      : `<div style="width:56px;height:32px;border-radius:4px;background:var(--surface2);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;">🎬</div>`;
+
+    let pillsHTML = '';
+    if (intencio === 'en curs') pillsHTML += `<span class="pill-intencio encurs">En curs</span>`;
+    if (intencio === 'propera costura') pillsHTML += `<span class="pill-intencio proxima">Propera costura</span>`;
+    if (intencio === 'pendent') pillsHTML += `<span class="pill-intencio pendent">Pendent</span>`;
+    if (feta) pillsHTML += `<span class="pill-intencio feta">✓ Feta${vegades > 0 ? ` (${vegades})` : ''}</span>`;
+
+    const starsHTML = valoracio > 0 ? `<div style="font-size:12px;color:#E8A000;flex-shrink:0">${[1,2,3,4,5].map(i => `<span style="color:${i <= valoracio ? '#E8A000' : 'var(--border)'}">★</span>`).join('')}</div>` : '';
+
+    const filaId = 'fila-' + idx;
+
+    const expandit = `<div class="fila-expandida" id="exp-${filaId}">
+      ${pillsHTML ? `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;">${pillsHTML}</div>` : ''}
+      ${canalEsc ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">📺 ${canalEsc}</div>` : ''}
+      ${nomVideoEsc ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">"${nomVideoEsc}"</div>` : ''}
+      ${notaSessio ? `<div class="card-nota-sessio" style="margin:6px 0">${escHTML(notaSessio)}</div>` : ''}
+      ${comentari ? `<div class="card-comentari">${escHTML(comentari)}</div>` : ''}
+      <div style="display:flex;gap:6px;margin-top:8px;">
+        ${url ? `<a href="${escHTML(url)}" target="_blank" class="yt-link" onclick="event.stopPropagation()">▶ Veure vídeo</a>` : ''}
+        <button class="btn btn-edit" onclick='event.stopPropagation();obrirEdicio(${JSON.stringify(t)})'>Editar</button>
+        <button class="btn btn-primary" style="font-size:0.8rem;padding:0.3rem 0.8rem" onclick='event.stopPropagation();obrirActualitzar(${JSON.stringify(t)})'>Actualitzar</button>
+      </div>
+    </div>`;
+
+    return `<div class="fila-tutorial" id="${filaId}">
+      <div class="fila-main" onclick="toggleFila('${filaId}')">
+        ${thumbHTML}
+        <div class="fila-nom">${nomEsc}</div>
+        ${starsHTML}
+        ${catEsc ? `<span class="card-categoria" style="flex-shrink:0">${catEsc}</span>` : ''}
+        <span class="fila-chevron" id="chev-${filaId}"><i class="ti ti-chevron-down" style="font-size:14px;color:var(--text-muted);" aria-hidden="true"></i></span>
+      </div>
+      ${expandit}
+    </div>`;
+  }
+
+  function toggleFila(id) {
+    const fila = document.getElementById(id);
+    const exp = document.getElementById('exp-' + id);
+    const chev = document.getElementById('chev-' + id);
+    const obert = exp.classList.toggle('obert');
+    fila.classList.toggle('obert', obert);
+    chev.style.transform = obert ? 'rotate(180deg)' : '';
+    if (obert) filesObertes.add(id); else filesObertes.delete(id);
+  }
+
+  function escHTML(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // DETECTAR NOM DE VÍDEO I CANAL DES DE LA URL
+  async function detectarInfoVideo() {
+    const url = document.getElementById('f-url').value.trim();
+    const statusEl = document.getElementById('f-url-status');
+    if (!url) return;
+
+    // Només actua si els camps estan buits (no sobreescriu el que l'usuària ha posat)
+    const nomVideoEl = document.getElementById('f-nom-video');
+    const canalEl = document.getElementById('f-canal');
+    if (nomVideoEl.value.trim() && canalEl.value.trim()) return;
+
+    statusEl.textContent = 'Detectant informació del vídeo...';
+    try {
+      const res = await fetch(API_URL + '?accio=getVideoInfo&url=' + encodeURIComponent(url));
+      const data = await res.json();
+      if (data.ok) {
+        if (!nomVideoEl.value.trim() && data.title) {
+          nomVideoEl.value = data.title;
+        }
+        if (!canalEl.value.trim() && data.canal) {
+          canalEl.value = data.canal;
+        }
+        statusEl.style.color = 'var(--success)';
+        statusEl.textContent = '✓ Informació detectada automàticament';
+        setTimeout(() => { statusEl.textContent = ''; }, 3000);
+      } else {
+        statusEl.style.color = 'var(--text-muted)';
+        statusEl.textContent = 'No s\'ha pogut detectar la informació. Omple els camps manualment.';
+      }
+    } catch (err) {
+      statusEl.style.color = 'var(--text-muted)';
+      statusEl.textContent = 'No s\'ha pogut detectar la informació. Omple els camps manualment.';
+    }
+  }
+
+  // AFEGIR
+  async function guardarTutorial() {
+    const nom = document.getElementById('f-nom').value.trim();
+    const categoria = document.getElementById('f-categoria').value;
+    if (!nom || !categoria) {
+      mostrarStatus('status-afegir', 'error', 'Mama, recorda\'t de posar també la categoria i el nom!');
+      return;
+    }
+    const btn = document.getElementById('btn-guardar');
+    btn.disabled = true;
+    btn.textContent = 'Guardant...';
+    const params = new URLSearchParams({
+      nom,
+      categoria,
+      nomVideo: document.getElementById('f-nom-video').value.trim(),
+      canal: document.getElementById('f-canal').value.trim(),
+      url: document.getElementById('f-url').value.trim(),
+      feta: document.getElementById('f-feta').checked ? 'si' : 'no',
+      comentari: document.getElementById('f-comentari').value.trim()
+    });
+    try {
+      const res = await fetch(API_URL + '?' + params);
+      const data = await res.json();
+      if (data.ok) {
+        mostrarStatus('status-afegir', 'ok', '✓ Tutorial guardat correctament!');
+        netejarFormulari();
+        await carregarTutorials();
+        comprovarCelebracio(tutorials.length);
+      } else {
+        mostrarStatus('status-afegir', 'error', 'Error en guardar. Torna-ho a intentar.');
+      }
+    } catch (e) {
+      mostrarStatus('status-afegir', 'error', 'Error de connexió.');
+    }
+    btn.disabled = false;
+    btn.textContent = 'Guardar tutorial';
+  }
+
+  function netejarFormulari() {
+    ['f-nom','f-nom-video','f-canal','f-url','f-comentari'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-categoria').value = '';
+    document.getElementById('f-feta').checked = false;
+  }
+
+  // EDITAR
+  function obrirEdicio(t) {
+    document.getElementById('edit-nom-original').value = t['nom'] || '';
+    document.getElementById('edit-nom').value = t['nom'] || '';
+    document.getElementById('edit-categoria').value = t['categoria'] || '';
+    document.getElementById('edit-nom-video').value = t['nom del vídeo'] || '';
+    document.getElementById('edit-canal').value = t['canal de YT (autoria)'] || '';
+    document.getElementById('edit-url').value = t['url'] || '';
+    const feta = t['feta?'] === 'si' || t['feta?'] === 'sí' || t['feta?'] === 'true';
+    document.getElementById('edit-feta').checked = feta;
+    document.getElementById('edit-comentari').value = t['comentari personal'] || '';
+    document.getElementById('modal-edicio').classList.add('open');
+    document.getElementById('status-edicio').className = 'status-msg';
+  }
+
+  function tancarModal() {
+    document.getElementById('modal-edicio').classList.remove('open');
+  }
+
+  async function guardarEdicio() {
+    const nom = document.getElementById('edit-nom').value.trim();
+    const categoria = document.getElementById('edit-categoria').value;
+    if (!nom || !categoria) {
+      mostrarStatus('status-edicio', 'error', 'El nom i la categoria són obligatoris.');
+      return;
+    }
+    const btn = document.getElementById('btn-editar');
+    btn.disabled = true;
+    btn.textContent = 'Guardant...';
+    const params = new URLSearchParams({
+      accio: 'editar',
+      nomOriginal: document.getElementById('edit-nom-original').value,
+      nom,
+      categoria,
+      nomVideo: document.getElementById('edit-nom-video').value.trim(),
+      canal: document.getElementById('edit-canal').value.trim(),
+      url: document.getElementById('edit-url').value.trim(),
+      feta: document.getElementById('edit-feta').checked ? 'si' : 'no',
+      comentari: document.getElementById('edit-comentari').value.trim()
+    });
+    try {
+      const res = await fetch(API_URL + '?' + params);
+      const data = await res.json();
+      if (data.ok) {
+        mostrarStatus('status-edicio', 'ok', '✓ Canvis guardats!');
+        setTimeout(() => { tancarModal(); carregarTutorials(); }, 1000);
+      } else {
+        mostrarStatus('status-edicio', 'error', data.error || 'Error en editar.');
+      }
+    } catch(e) {
+      mostrarStatus('status-edicio', 'error', 'Error de connexió.');
+    }
+    btn.disabled = false;
+    btn.textContent = 'Guardar canvis';
+  }
+
+  // ELIMINAR
+  async function eliminarTutorial(nom) {
+    if (!confirm(`Segur que vols eliminar "${nom}"?`)) return;
+    try {
+      const res = await fetch(API_URL + '?accio=eliminar&nomOriginal=' + encodeURIComponent(nom));
+      const data = await res.json();
+      if (data.ok) carregarTutorials();
+      else alert('No s\'ha pogut eliminar el tutorial.');
+    } catch(e) {
+      alert('Error de connexió.');
+    }
+  }
+
+  function eliminarDesDeModal() {
+    const nom = document.getElementById('edit-nom').value.trim();
+    tancarModal();
+    eliminarTutorial(nom);
+  }
+
+  function setFiltreIntencio(val, btn) {
+    filtreIntencio = val;
+    document.querySelectorAll('[data-intencio]').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.stat-clickable').forEach(s => s.classList.remove('actiu'));
+    renderTutorials();
+  }
+
+  function obrirActualitzar(t) {
+    nomActualitzant = t['nom'] || '';
+    document.getElementById('actualitzar-titol').textContent = nomActualitzant;
+    document.getElementById('act-nota').value = t['nota sessio'] || '';
+    document.getElementById('act-vegades-num').textContent = parseInt(t['vegades fet']) || 0;
+    const valoracio = parseInt(t['valoracio']) || 0;
+    document.querySelectorAll('#act-stars .star').forEach(s => {
+      s.classList.toggle('on', parseInt(s.dataset.v) <= valoracio);
+    });
+    const intencio = (t['intencio'] || '').toLowerCase().trim();
+    document.querySelectorAll('.chip-intencio').forEach(b => {
+      b.classList.remove('actiu');
+      if (b.dataset.val === intencio) b.classList.add('actiu');
+    });
+    if (!intencio) document.querySelector('.chip-intencio[data-val=""]').classList.add('actiu');
+    document.getElementById('modal-actualitzar').classList.add('open');
+  }
+
+  function tancarModalActualitzar() {
+    document.getElementById('modal-actualitzar').classList.remove('open');
+  }
+
+  function seleccionarIntencio(btn) {
+    document.querySelectorAll('.chip-intencio').forEach(b => b.classList.remove('actiu'));
+    btn.classList.add('actiu');
+  }
+
+  function canviarVegades(delta) {
+    const el = document.getElementById('act-vegades-num');
+    const val = Math.max(0, parseInt(el.textContent) + delta);
+    el.textContent = val;
+  }
+
+  document.querySelectorAll('#act-stars .star').forEach(s => {
+    s.addEventListener('click', () => {
+      const v = parseInt(s.dataset.v);
+      document.querySelectorAll('#act-stars .star').forEach(st => {
+        st.classList.toggle('on', parseInt(st.dataset.v) <= v);
+      });
+    });
+  });
+
+  async function guardarActualitzacio() {
+    const intencio = document.querySelector('.chip-intencio.actiu')?.dataset.val || '';
+    const nota = document.getElementById('act-nota').value.trim();
+    const vegades = document.getElementById('act-vegades-num').textContent;
+    const valoracio = document.querySelectorAll('#act-stars .star.on').length;
+    const btn = document.querySelector('#modal-actualitzar .btn-primary');
+    btn.disabled = true;
+    btn.textContent = 'Guardant...';
+    try {
+      const params = new URLSearchParams({ accio: 'actualitzar', nom: nomActualitzant, intencio, notaSessio: nota, vegadesFet: vegades, valoracio });
+      const res = await fetch(API_URL + '?' + params.toString());
+      const data = await res.json();
+      if (data.ok) {
+        tancarModalActualitzar();
+        carregarTutorials();
+      } else {
+        alert('No s\'ha pogut guardar. Comprova la connexió.');
+      }
+    } catch(e) {
+      alert('Error de connexió.');
+    }
+    btn.disabled = false;
+    btn.textContent = 'Guardar';
+  }
+
+  document.getElementById('modal-actualitzar').addEventListener('click', function(e) {
+    if (e.target === this) tancarModalActualitzar();
+  });
+
+  // GALERIA DE FOTOS
+  async function eliminarFoto(btn, nomTutorial, urlFoto) {
+    if (!confirm('Eliminar aquesta foto?')) return;
+    const wrap = btn.parentElement;
+    const container = wrap.parentElement;
+    wrap.style.opacity = '0.4';
+    try {
+      const params = new URLSearchParams({ accio: 'eliminarFoto', nom: nomTutorial, urlFoto: urlFoto });
+      const res = await fetch(API_URL + '?' + params.toString());
+      const data = await res.json();
+      if (data.ok) {
+        wrap.remove();
+      } else {
+        wrap.style.opacity = '1';
+        alert('Error en eliminar la foto: ' + (data.error || 'Error desconegut'));
+      }
+    } catch (err) {
+      wrap.style.opacity = '1';
+      alert('Error de connexió en eliminar la foto.');
+    }
+  }
+
+  function afegirFoto(btn) {
+    const input = btn.nextElementSibling;
+    input.click();
+  }
+
+  function mostrarFoto(event, input) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const container = input.parentElement;
+    const nomTutorial = container.dataset.nom || '';
+    const btn = container.querySelector('.card-galeria-add');
+
+    // Mostrar placeholder mentre es puja
+    const wrap = document.createElement('div');
+    wrap.className = 'card-galeria-foto-wrap';
+    const imgPreview = document.createElement('img');
+    imgPreview.className = 'card-galeria-foto';
+    imgPreview.style.opacity = '0.4';
+    imgPreview.title = 'Pujant...';
+    wrap.appendChild(imgPreview);
+    container.insertBefore(wrap, btn);
+
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      const base64 = e.target.result;
+      imgPreview.src = base64; // mostra preview local mentre puja
+
+      try {
+        const formData = new FormData();
+        formData.append('accio', 'uploadFoto');
+        formData.append('base64', base64);
+        formData.append('nomFitxer', file.name);
+        formData.append('nomTutorial', nomTutorial);
+        const res = await fetch(API_URL, { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (data.ok && data.url) {
+          imgPreview.src = data.url;
+          imgPreview.style.opacity = '1';
+          imgPreview.title = file.name;
+          const deleteBtn = document.createElement('button');
+          deleteBtn.className = 'card-galeria-delete';
+          deleteBtn.title = 'Eliminar foto';
+          deleteBtn.textContent = '✕';
+          deleteBtn.onclick = (e) => { e.stopPropagation(); eliminarFoto(deleteBtn, nomTutorial, data.url); };
+          wrap.appendChild(deleteBtn);
+        } else {
+          wrap.remove();
+          alert('Error en pujar la foto: ' + (data.error || 'Error desconegut'));
+        }
+      } catch (err) {
+        wrap.remove();
+        alert('Error de connexió en pujar la foto.');
+      }
+      input.value = '';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // UTILS
+  function mostrarStatus(id, tipus, msg) {
+    const el = document.getElementById(id);
+    el.className = 'status-msg ' + tipus;
+    el.textContent = msg;
+    if (tipus === 'ok') setTimeout(() => el.className = 'status-msg', 4000);
+  }
+
+  // Tancar modal clicant fora
+  document.getElementById('modal-edicio').addEventListener('click', function(e) {
+    if (e.target === this) tancarModal();
+  });
+
+  // Inicialitzar
+  inicialitzarPortada();
+</script>
+  <canvas class="confeti-canvas" id="confeti-canvas"></canvas>
+  <div class="celebracio-overlay" id="celebracio-overlay">
+    <div class="celebracio-box">
+      <div class="celebracio-emoji">🎉</div>
+      <div class="celebracio-text" id="celebracio-text"></div>
+      <button class="celebracio-btn" onclick="tancarCelebracio()">Tancar</button>
+    </div>
+  </div>
+
+  <div class="lightbox-overlay" id="lightbox" onclick="lightboxClickFora(event)">
+    <span class="lightbox-close" onclick="tancarLightbox()">✕</span>
+    <span class="lightbox-nav prev" id="lb-prev" onclick="lightboxNav(-1)">‹</span>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <span class="lightbox-nav next" id="lb-next" onclick="lightboxNav(1)">›</span>
+    <div class="lightbox-counter" id="lb-counter"></div>
+  </div>
+
+</body>
+</html>
