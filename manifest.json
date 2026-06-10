@@ -2,7 +2,7 @@
   "name": "Nuska - Tutorials de costura",
   "short_name": "Nuska",
   "description": "La teva biblioteca de tutorials de costura",
-  "start_url": "./nuska_v5.html",
+  "start_url": "/App-costura/",
   "display": "standalone",
   "background_color": "#f4efe8",
   "theme_color": "#9b3a3a",
@@ -12,13 +12,25 @@
       "src": "nuska-icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "nuska-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "nuska-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "nuska-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
