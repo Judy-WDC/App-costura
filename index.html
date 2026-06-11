@@ -1393,11 +1393,16 @@
       document.getElementById('password-overlay').classList.add('hidden');
       const shareUrl = sessionStorage.getItem('nuska_share_url');
       if (shareUrl) {
+        const shareTitle = sessionStorage.getItem('nuska_share_title') || '';
         sessionStorage.removeItem('nuska_share_url');
+        sessionStorage.removeItem('nuska_share_title');
         carregarTutorials({ renderitzar: false }).then(() => {
           actualitzarPortadaStats();
           showViewDirect('afegir');
           document.getElementById('f-url').value = shareUrl;
+          if (shareTitle) {
+            document.getElementById('f-nom-video').value = shareTitle.replace(/\+/g, ' ');
+          }
           detectarInfoVideo();
         });
       } else {
