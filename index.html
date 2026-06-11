@@ -1065,6 +1065,14 @@
 </style>
 </head>
 <body>
+  <!-- DEBUG TEMPORAL: mostra la URL completa immediatament -->
+  <div id="debug-url" style="position:fixed;top:0;left:0;right:0;background:#000;color:#ff0;font-family:monospace;font-size:12px;padding:10px;z-index:99999;word-break:break-all;">
+    Carregant URL...
+  </div>
+  <script>
+    document.getElementById('debug-url').textContent = 'URL: ' + window.location.href;
+  </script>
+  <!-- FI DEBUG -->
 
 <!-- PANTALLA CONTRASENYA -->
 <div class="password-overlay" id="password-overlay">
