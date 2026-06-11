@@ -1383,7 +1383,15 @@
     if (localStorage.getItem('nuska_auth')) {
       autenticat = true;
       document.getElementById('password-overlay').classList.add('hidden');
-      carregarTutorials().then(actualitzarPortadaStats);
+      carregarTutorials().then(actualitzarPortadaStats).then(() => {
+        const shareUrl = sessionStorage.getItem('nuska_share_url');
+        if (shareUrl) {
+          sessionStorage.removeItem('nuska_share_url');
+          showViewDirect('afegir');
+          document.getElementById('f-url').value = shareUrl;
+          detectarInfoVideo();
+        }
+      });
     } else {
       document.getElementById('password-input').focus();
     }
@@ -2274,28 +2282,13 @@
   });
 
   // SHARE TARGET: detectar si l'app s'ha obert via "Compartir" de YouTube
+  // Guardem la URL sempre a sessionStorage; el .then() de carregarTutorials() l'activarà
   (function() {
     const params = new URLSearchParams(window.location.search);
     const urlCompartida = params.get('url');
     if (!urlCompartida) return;
-
-    function activarShareTarget() {
-      showViewDirect('afegir');
-      document.getElementById('f-url').value = urlCompartida;
-      detectarInfoVideo();
-      history.replaceState({}, '', window.location.pathname);
-    }
-
-    if (localStorage.getItem('nuska_auth')) {
-      const interval = setInterval(() => {
-        if (document.getElementById('f-url')) {
-          clearInterval(interval);
-          activarShareTarget();
-        }
-      }, 100);
-    } else {
-      sessionStorage.setItem('nuska_share_url', urlCompartida);
-    }
+    sessionStorage.setItem('nuska_share_url', urlCompartida);
+    history.replaceState({}, '', window.location.pathname);
   })();
 
   // Inicialitzar
