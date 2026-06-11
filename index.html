@@ -1065,14 +1065,6 @@
 </style>
 </head>
 <body>
-  <!-- DEBUG TEMPORAL: mostra la URL completa immediatament -->
-  <div id="debug-url" style="position:fixed;top:0;left:0;right:0;background:#000;color:#ff0;font-family:monospace;font-size:12px;padding:10px;z-index:99999;word-break:break-all;">
-    Carregant URL...
-  </div>
-  <script>
-    document.getElementById('debug-url').textContent = 'URL: ' + window.location.href;
-  </script>
-  <!-- FI DEBUG -->
 
 <!-- PANTALLA CONTRASENYA -->
 <div class="password-overlay" id="password-overlay">
@@ -1392,25 +1384,21 @@
     const params = new URLSearchParams(window.location.search);
     const urlCompartida = params.get('text') || params.get('url') || '';
     const titolCompartit = params.get('title') || '';
-    dbg('AUTH INIT: url=' + urlCompartida + ' | title=' + titolCompartit);
     if (urlCompartida) {
       sessionStorage.setItem('nuska_share_url', urlCompartida);
       sessionStorage.setItem('nuska_share_title', titolCompartit);
       history.replaceState({}, '', window.location.pathname);
-      dbg('AUTH INIT: paràmetres guardats');
     }
 
     if (localStorage.getItem('nuska_auth')) {
       autenticat = true;
       document.getElementById('password-overlay').classList.add('hidden');
       const shareUrl = sessionStorage.getItem('nuska_share_url');
-      dbg('AUTH INIT: shareUrl=' + shareUrl);
       if (shareUrl) {
         const shareTitle = sessionStorage.getItem('nuska_share_title') || '';
         sessionStorage.removeItem('nuska_share_url');
         sessionStorage.removeItem('nuska_share_title');
         carregarTutorials({ renderitzar: false }).then(() => {
-          dbg('.then(): omplint formulari');
           actualitzarPortadaStats();
           showViewDirect('afegir');
           setTimeout(() => {
@@ -1420,7 +1408,6 @@
               if (!nomEl.value.trim() && shareTitle) {
                 nomEl.value = shareTitle;
               }
-              dbg('.then(): formulari omplert');
             });
           }, 100);
         });
