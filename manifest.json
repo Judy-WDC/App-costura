@@ -38,7 +38,8 @@
     "method": "GET",
     "params": {
       "title": "title",
-      "url": "url"
+      "url": "url",
+      "text": "text"
     }
   }
 }

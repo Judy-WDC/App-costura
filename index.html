@@ -2295,11 +2295,19 @@
     if (e.target === this) tancarModal();
   });
 
+  // Extreu la primera URL d'un text (YouTube envia "Títol https://youtu.be/xxx")
+  function extractUrl(text) {
+    if (!text) return null;
+    const match = text.match(/https?:\/\/\S+/);
+    return match ? match[0] : null;
+  }
+
   // SHARE TARGET: detectar si l'app s'ha obert via "Compartir" de YouTube
   (function() {
     dbg('SHARE TARGET: window.location.search = ' + window.location.search);
     const params = new URLSearchParams(window.location.search);
-    const urlCompartida = params.get('url');
+    // YouTube envia l'enllaç dins "text"; "url" és el camp estàndard
+    const urlCompartida = params.get('url') || extractUrl(params.get('text'));
     dbg('SHARE TARGET: urlCompartida = ' + (urlCompartida || 'cap'));
     if (!urlCompartida) return;
     sessionStorage.setItem('nuska_share_url', urlCompartida);
