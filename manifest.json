@@ -32,5 +32,13 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "share_target": {
+    "action": "/App-costura/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "url": "url"
+    }
+  }
 }

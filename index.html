@@ -1395,7 +1395,15 @@
       autenticat = true;
       sessionStorage.setItem('nuska_auth', '1');
       document.getElementById('password-overlay').classList.add('hidden');
-      carregarTutorials().then(actualitzarPortadaStats);
+      carregarTutorials().then(actualitzarPortadaStats).then(() => {
+        const shareUrl = sessionStorage.getItem('nuska_share_url');
+        if (shareUrl) {
+          sessionStorage.removeItem('nuska_share_url');
+          showViewDirect('afegir');
+          document.getElementById('f-url').value = shareUrl;
+          detectarInfoVideo();
+        }
+      });
     } else {
       document.getElementById('password-error').textContent = 'Contrasenya incorrecta. Torna-ho a intentar.';
       document.getElementById('password-input').value = '';
@@ -2264,6 +2272,31 @@
   document.getElementById('modal-edicio').addEventListener('click', function(e) {
     if (e.target === this) tancarModal();
   });
+
+  // SHARE TARGET: detectar si l'app s'ha obert via "Compartir" de YouTube
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const urlCompartida = params.get('url');
+    if (!urlCompartida) return;
+
+    function activarShareTarget() {
+      showViewDirect('afegir');
+      document.getElementById('f-url').value = urlCompartida;
+      detectarInfoVideo();
+      history.replaceState({}, '', window.location.pathname);
+    }
+
+    if (sessionStorage.getItem('nuska_auth')) {
+      const interval = setInterval(() => {
+        if (document.getElementById('f-url')) {
+          clearInterval(interval);
+          activarShareTarget();
+        }
+      }, 100);
+    } else {
+      sessionStorage.setItem('nuska_share_url', urlCompartida);
+    }
+  })();
 
   // Inicialitzar
   inicialitzarPortada();
