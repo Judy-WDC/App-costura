@@ -2288,13 +2288,15 @@
   });
 
   // SHARE TARGET: detectar si l'app s'ha obert via "Compartir" de YouTube
-  // Guardem la URL sempre a sessionStorage; el .then() de carregarTutorials() l'activarà
   (function() {
+    dbg('SHARE TARGET: window.location.search = ' + window.location.search);
     const params = new URLSearchParams(window.location.search);
     const urlCompartida = params.get('url');
+    dbg('SHARE TARGET: urlCompartida = ' + (urlCompartida || 'cap'));
     if (!urlCompartida) return;
     sessionStorage.setItem('nuska_share_url', urlCompartida);
     history.replaceState({}, '', window.location.pathname);
+    dbg('SHARE TARGET: URL guardada a sessionStorage');
   })();
 
   // Inicialitzar
