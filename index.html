@@ -1387,23 +1387,42 @@
   // CONTRASENYA
   let autenticat = false;
 
+  // Llegir paràmetres del Share Target directament aquí, abans de tot
   (function() {
+    const params = new URLSearchParams(window.location.search);
+    const urlCompartida = params.get('text') || params.get('url') || '';
+    const titolCompartit = params.get('title') || '';
+    dbg('AUTH INIT: url=' + urlCompartida + ' | title=' + titolCompartit);
+    if (urlCompartida) {
+      sessionStorage.setItem('nuska_share_url', urlCompartida);
+      sessionStorage.setItem('nuska_share_title', titolCompartit);
+      history.replaceState({}, '', window.location.pathname);
+      dbg('AUTH INIT: paràmetres guardats');
+    }
+
     if (localStorage.getItem('nuska_auth')) {
       autenticat = true;
       document.getElementById('password-overlay').classList.add('hidden');
       const shareUrl = sessionStorage.getItem('nuska_share_url');
+      dbg('AUTH INIT: shareUrl=' + shareUrl);
       if (shareUrl) {
         const shareTitle = sessionStorage.getItem('nuska_share_title') || '';
         sessionStorage.removeItem('nuska_share_url');
         sessionStorage.removeItem('nuska_share_title');
         carregarTutorials({ renderitzar: false }).then(() => {
+          dbg('.then(): omplint formulari');
           actualitzarPortadaStats();
           showViewDirect('afegir');
-          document.getElementById('f-url').value = shareUrl;
-          if (shareTitle) {
-            document.getElementById('f-nom-video').value = shareTitle.replace(/\+/g, ' ');
-          }
-          detectarInfoVideo();
+          setTimeout(() => {
+            document.getElementById('f-url').value = shareUrl;
+            detectarInfoVideo().then(() => {
+              const nomEl = document.getElementById('f-nom-video');
+              if (!nomEl.value.trim() && shareTitle) {
+                nomEl.value = shareTitle;
+              }
+              dbg('.then(): formulari omplert');
+            });
+          }, 100);
         });
       } else {
         carregarTutorials().then(actualitzarPortadaStats);
@@ -1421,12 +1440,21 @@
       document.getElementById('password-overlay').classList.add('hidden');
       const shareUrl = sessionStorage.getItem('nuska_share_url');
       if (shareUrl) {
+        const shareTitle = sessionStorage.getItem('nuska_share_title') || '';
         sessionStorage.removeItem('nuska_share_url');
+        sessionStorage.removeItem('nuska_share_title');
         carregarTutorials({ renderitzar: false }).then(() => {
           actualitzarPortadaStats();
           showViewDirect('afegir');
-          document.getElementById('f-url').value = shareUrl;
-          detectarInfoVideo();
+          setTimeout(() => {
+            document.getElementById('f-url').value = shareUrl;
+            detectarInfoVideo().then(() => {
+              const nomEl = document.getElementById('f-nom-video');
+              if (!nomEl.value.trim() && shareTitle) {
+                nomEl.value = shareTitle;
+              }
+            });
+          }, 100);
         });
       } else {
         carregarTutorials().then(actualitzarPortadaStats);
@@ -2299,26 +2327,6 @@
   document.getElementById('modal-edicio').addEventListener('click', function(e) {
     if (e.target === this) tancarModal();
   });
-
-  // Extreu la primera URL d'un text (YouTube envia "Títol https://youtu.be/xxx")
-  function extractUrl(text) {
-    if (!text) return null;
-    const match = text.match(/https?:\/\/\S+/);
-    return match ? match[0] : null;
-  }
-
-  // SHARE TARGET: detectar si l'app s'ha obert via "Compartir" de YouTube
-  (function() {
-    dbg('SHARE TARGET: window.location.search = ' + window.location.search);
-    const params = new URLSearchParams(window.location.search);
-    // YouTube envia l'enllaç dins "text"; "url" és el camp estàndard
-    const urlCompartida = params.get('url') || extractUrl(params.get('text'));
-    dbg('SHARE TARGET: urlCompartida = ' + (urlCompartida || 'cap'));
-    if (!urlCompartida) return;
-    sessionStorage.setItem('nuska_share_url', urlCompartida);
-    history.replaceState({}, '', window.location.pathname);
-    dbg('SHARE TARGET: URL guardada a sessionStorage');
-  })();
 
   // Inicialitzar
   inicialitzarPortada();
