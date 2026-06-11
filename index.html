@@ -1380,7 +1380,7 @@
   let autenticat = false;
 
   (function() {
-    if (sessionStorage.getItem('nuska_auth')) {
+    if (localStorage.getItem('nuska_auth')) {
       autenticat = true;
       document.getElementById('password-overlay').classList.add('hidden');
       carregarTutorials().then(actualitzarPortadaStats);
@@ -1393,7 +1393,7 @@
     const val = document.getElementById('password-input').value;
     if (val === '4030') {
       autenticat = true;
-      sessionStorage.setItem('nuska_auth', '1');
+      localStorage.setItem('nuska_auth', '1');
       document.getElementById('password-overlay').classList.add('hidden');
       carregarTutorials().then(actualitzarPortadaStats).then(() => {
         const shareUrl = sessionStorage.getItem('nuska_share_url');
@@ -2286,7 +2286,7 @@
       history.replaceState({}, '', window.location.pathname);
     }
 
-    if (sessionStorage.getItem('nuska_auth')) {
+    if (localStorage.getItem('nuska_auth')) {
       const interval = setInterval(() => {
         if (document.getElementById('f-url')) {
           clearInterval(interval);
