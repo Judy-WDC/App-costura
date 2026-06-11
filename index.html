@@ -1376,6 +1376,17 @@
 <script>
   const API_URL = 'https://script.google.com/macros/s/AKfycbydWUhDJAgTuFKqQahxFyola0rs42bQAxORa_7NrGIzr5lv5su5YsmpcBbCbzD7M1mZoA/exec';
 
+  // SHARE TARGET: detectar si l'app s'ha obert via "Compartir" de YouTube
+  // Ha d'anar ABANS del bloc d'autenticació perquè la URL ja estigui
+  // guardada quan el .then() de carregarTutorials() s'executi
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const urlCompartida = params.get('url');
+    if (!urlCompartida) return;
+    sessionStorage.setItem('nuska_share_url', urlCompartida);
+    history.replaceState({}, '', window.location.pathname);
+  })();
+
   // CONTRASENYA
   let autenticat = false;
 
@@ -2280,16 +2291,6 @@
   document.getElementById('modal-edicio').addEventListener('click', function(e) {
     if (e.target === this) tancarModal();
   });
-
-  // SHARE TARGET: detectar si l'app s'ha obert via "Compartir" de YouTube
-  // Guardem la URL sempre a sessionStorage; el .then() de carregarTutorials() l'activarà
-  (function() {
-    const params = new URLSearchParams(window.location.search);
-    const urlCompartida = params.get('url');
-    if (!urlCompartida) return;
-    sessionStorage.setItem('nuska_share_url', urlCompartida);
-    history.replaceState({}, '', window.location.pathname);
-  })();
 
   // Inicialitzar
   inicialitzarPortada();
