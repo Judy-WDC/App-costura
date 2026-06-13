@@ -281,10 +281,51 @@
     font-size: 0.875rem;
     font-weight: 500;
     margin-top: 1rem;
+    margin-bottom: 1rem;
     max-width: 680px;
   }
   .status-msg.ok { background: #eef6f1; color: var(--success); border: 1px solid #b8d9c4; display: block; }
   .status-msg.error { background: #fdf0f0; color: var(--danger); border: 1px solid #e8b8b8; display: block; }
+  .status-msg.shake { animation: shake 0.4s ease-in-out; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  .input-error { border-color: var(--danger) !important; background: #fdf0f0 !important; }
+
+  /* === Seccions del modal d'edició unificat === */
+  .edit-seccio {
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .edit-seccio-progres {
+    background: var(--accent-bg);
+  }
+  .edit-seccio-dades {
+    background: var(--surface2);
+  }
+  .edit-seccio-titol {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.75rem;
+  }
+  .edit-seccio-titol-dades {
+    color: var(--text-muted);
+  }
+  .edit-zona-perillosa {
+    border-top: 0.5px solid #d8cfc2;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+  }
+  .edit-zona-perillosa .btn-danger {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.9rem;
+  }
 
   /* VISTA TUTORIALS */
   .filters-bar {
@@ -544,8 +585,6 @@
     transition: var(--transition);
   }
 
-  .card-galeria-foto:hover { opacity: 0.85; transform: scale(1.04); }
-
   .card-galeria-foto-wrap {
     position: relative;
     width: 52px;
@@ -557,8 +596,6 @@
     width: 52px;
     height: 52px;
   }
-
-  .card-galeria-foto-wrap:hover .card-galeria-foto { opacity: 0.75; transform: scale(1.04); }
 
   .card-galeria-delete {
     display: none;
@@ -580,7 +617,18 @@
     z-index: 2;
   }
 
-  .card-galeria-foto-wrap:hover .card-galeria-delete { display: flex; }
+  /* Hover effects només per a dispositius amb ratolí real (escriptori).
+     A dispositius tàctils com iPad evitem el problema del "double-tap hover bug". */
+  @media (hover: hover) {
+    .card-galeria-foto:hover { opacity: 0.85; transform: scale(1.04); }
+    .card-galeria-foto-wrap:hover .card-galeria-foto { opacity: 0.75; transform: scale(1.04); }
+    .card-galeria-foto-wrap:hover .card-galeria-delete { display: flex; }
+  }
+  /* En dispositius tàctils, el botó d'eliminar foto és sempre visible
+     perquè no hi ha hover per mostrar-lo. */
+  @media (hover: none) {
+    .card-galeria-foto-wrap .card-galeria-delete { display: flex; }
+  }
 
   .card-galeria-add {
     width: 52px;
@@ -790,9 +838,9 @@
     background: var(--primary);
     color: white;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 500;
-    padding: 12px 28px;
+    padding: 14px 32px;
     border-radius: var(--radius);
     border: none;
     cursor: pointer;
@@ -805,10 +853,11 @@
   .portada-btn-principal:hover { background: #3d0614; transform: translateY(-1px); }
   .portada-btn-secundari {
     background: var(--surface);
-    color: var(--text-muted);
+    color: var(--text);
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 14px 28px;
     border-radius: var(--radius);
     border: 1px solid var(--border);
     cursor: pointer;
@@ -1215,6 +1264,8 @@
       <p class="page-subtitle">Guarda un nou tutorial de YouTube</p>
     </div>
 
+    <div class="status-msg" id="status-afegir"></div>
+
     <div class="form-card">
       <div class="form-grid">
         <div class="form-group">
@@ -1263,33 +1314,37 @@
         <button class="btn btn-primary" id="btn-guardar" onclick="guardarTutorial()">Guardar tutorial</button>
         <button class="btn btn-secondary" onclick="netejarFormulari()">Netejar</button>
       </div>
-      <div class="status-msg" id="status-afegir"></div>
     </div>
   </div>
 
 </main>
 
-<!-- MODAL ACTUALITZAR -->
-<div class="modal-overlay" id="modal-actualitzar">
+<!-- MODAL EDICIÓ (unificat: dades + progrés) -->
+<div class="modal-overlay" id="modal-edicio">
   <div class="modal">
-    <div class="modal-header">
-      <h2 class="modal-title" id="actualitzar-titol"></h2>
-      <button class="modal-close" onclick="tancarModalActualitzar()">✕</button>
-    </div>
-    <div class="modal-body">
+    <h2 class="modal-title" id="edit-titol">Editar tutorial</h2>
+    <div class="status-msg" id="status-edicio"></div>
+    <input type="hidden" id="edit-nom-original">
+
+    <!-- SECCIÓ: EL MEU PROGRÉS -->
+    <div class="edit-seccio edit-seccio-progres">
+      <p class="edit-seccio-titol">El meu progrés</p>
+
       <div class="form-group">
-        <label>Intenció</label>
+        <label>Estat</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
-          <button class="chip-intencio" data-val="" onclick="seleccionarIntencio(this)">Cap</button>
-          <button class="chip-intencio" data-val="pendent" onclick="seleccionarIntencio(this)">Pendent</button>
-          <button class="chip-intencio" data-val="en curs" onclick="seleccionarIntencio(this)">En curs</button>
-          <button class="chip-intencio" data-val="propera costura" onclick="seleccionarIntencio(this)">Propera costura</button>
+          <button type="button" class="chip-intencio" data-val="" onclick="seleccionarIntencio(this)">Cap</button>
+          <button type="button" class="chip-intencio" data-val="pendent" onclick="seleccionarIntencio(this)">Pendent</button>
+          <button type="button" class="chip-intencio" data-val="en curs" onclick="seleccionarIntencio(this)">En curs</button>
+          <button type="button" class="chip-intencio" data-val="propera costura" onclick="seleccionarIntencio(this)">Propera costura</button>
         </div>
       </div>
+
       <div class="form-group" style="margin-top:1rem">
         <label for="act-nota">Nota de sessió</label>
         <textarea id="act-nota" rows="2" placeholder="p.ex. vaig fins al minut 14, talla M per la tieta Rosa"></textarea>
       </div>
+
       <div class="form-group" style="margin-top:1rem">
         <label>Valoració</label>
         <div class="star-rating" id="act-stars" style="margin-top:6px">
@@ -1300,76 +1355,68 @@
           <span class="star" data-v="5">★</span>
         </div>
       </div>
+
       <div class="form-group" style="margin-top:1rem">
         <label>Vegades fet</label>
         <div style="display:flex;align-items:center;gap:12px;margin-top:6px">
-          <button class="btn btn-secondary" onclick="canviarVegades(-1)" style="width:32px;height:32px;padding:0;font-size:1.2rem">−</button>
+          <button type="button" class="btn btn-secondary" onclick="canviarVegades(-1)" style="width:32px;height:32px;padding:0;font-size:1.2rem">−</button>
           <span id="act-vegades-num" style="font-size:1.4rem;font-weight:500;min-width:24px;text-align:center">0</span>
-          <button class="btn btn-secondary" onclick="canviarVegades(1)" style="width:32px;height:32px;padding:0;font-size:1.2rem">+</button>
+          <button type="button" class="btn btn-secondary" onclick="canviarVegades(1)" style="width:32px;height:32px;padding:0;font-size:1.2rem">+</button>
           <span style="font-size:0.85rem;color:var(--text-muted)">vegades</span>
         </div>
       </div>
     </div>
-    <div class="form-actions">
-      <button class="btn btn-secondary" onclick="tancarModalActualitzar()">Cancel·lar</button>
-      <button class="btn btn-primary" onclick="guardarActualitzacio()">Guardar</button>
-    </div>
-  </div>
-</div>
 
-<!-- MODAL EDICIÓ -->
-<div class="modal-overlay" id="modal-edicio">
-  <div class="modal">
-    <h2 class="modal-title">Editar tutorial</h2>
-    <input type="hidden" id="edit-nom-original">
-    <div class="form-grid">
-      <div class="form-group">
-        <label for="edit-nom">Nom</label>
-        <input type="text" id="edit-nom">
-      </div>
-      <div class="form-group">
-        <label for="edit-categoria">Categoria</label>
-        <select id="edit-categoria">
-          <option value="">— Selecciona —</option>
-          <option value="Bosses">Bosses</option>
-          <option value="Bolsos">Bolsos</option>
-          <option value="moneders">Moneders</option>
-          <option value="necessers">Necessers</option>
-          <option value="Trucs">Trucs</option>
-          <option value="Nadal">Nadal</option>
-          <option value="altres">Altres</option>
-        </select>
-      </div>
-      <div class="form-group full">
-        <label for="edit-nom-video">Nom del vídeo</label>
-        <input type="text" id="edit-nom-video">
-      </div>
-      <div class="form-group">
-        <label for="edit-canal">Canal de YT</label>
-        <input type="text" id="edit-canal">
-      </div>
-      <div class="form-group">
-        <label for="edit-url">URL del vídeo</label>
-        <input type="url" id="edit-url">
-      </div>
-      <div class="form-group full">
-        <label>Ja l'he fet?</label>
-        <div class="checkbox-row">
-          <input type="checkbox" id="edit-feta">
-          <span>Sí, ja he fet aquest tutorial</span>
+    <!-- SECCIÓ: DADES DEL TUTORIAL -->
+    <div class="edit-seccio edit-seccio-dades">
+      <p class="edit-seccio-titol edit-seccio-titol-dades">Dades del tutorial</p>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="edit-nom">Nom</label>
+          <input type="text" id="edit-nom">
+        </div>
+        <div class="form-group">
+          <label for="edit-categoria">Categoria</label>
+          <select id="edit-categoria">
+            <option value="">— Selecciona —</option>
+            <option value="Bosses">Bosses</option>
+            <option value="Bolsos">Bolsos</option>
+            <option value="moneders">Moneders</option>
+            <option value="necessers">Necessers</option>
+            <option value="Trucs">Trucs</option>
+            <option value="Nadal">Nadal</option>
+            <option value="altres">Altres</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="edit-nom-video">Nom del vídeo</label>
+          <input type="text" id="edit-nom-video">
+        </div>
+        <div class="form-group">
+          <label for="edit-canal">Canal de YT</label>
+          <input type="text" id="edit-canal">
+        </div>
+        <div class="form-group">
+          <label for="edit-url">URL del vídeo</label>
+          <input type="url" id="edit-url">
+        </div>
+        <div class="form-group full">
+          <label for="edit-comentari">Comentari personal</label>
+          <textarea id="edit-comentari"></textarea>
         </div>
       </div>
-      <div class="form-group full">
-        <label for="edit-comentari">Comentari personal</label>
-        <textarea id="edit-comentari"></textarea>
+
+      <div class="edit-zona-perillosa">
+        <button class="btn btn-danger" id="btn-eliminar-modal" onclick="eliminarDesDeModal()">Eliminar tutorial</button>
       </div>
     </div>
+
     <div class="form-actions">
-      <button class="btn btn-primary" id="btn-editar" onclick="guardarEdicio()">Guardar canvis</button>
       <button class="btn btn-secondary" onclick="tancarModal()">Cancel·lar</button>
-      <button class="btn btn-danger" id="btn-eliminar-modal" onclick="eliminarDesDeModal()">Eliminar tutorial</button>
+      <button class="btn btn-primary" id="btn-editar" onclick="guardarEdicio()">Guardar</button>
     </div>
-    <div class="status-msg" id="status-edicio"></div>
+
   </div>
 </div>
 
@@ -1379,41 +1426,11 @@
   // CONTRASENYA
   let autenticat = false;
 
-  // Llegir paràmetres del Share Target directament aquí, abans de tot
   (function() {
-    const params = new URLSearchParams(window.location.search);
-    const urlCompartida = params.get('text') || params.get('url') || '';
-    const titolCompartit = params.get('title') || '';
-    if (urlCompartida) {
-      sessionStorage.setItem('nuska_share_url', urlCompartida);
-      sessionStorage.setItem('nuska_share_title', titolCompartit);
-      history.replaceState({}, '', window.location.pathname);
-    }
-
-    if (localStorage.getItem('nuska_auth')) {
+    if (sessionStorage.getItem('nuska_auth')) {
       autenticat = true;
       document.getElementById('password-overlay').classList.add('hidden');
-      const shareUrl = sessionStorage.getItem('nuska_share_url');
-      if (shareUrl) {
-        const shareTitle = sessionStorage.getItem('nuska_share_title') || '';
-        sessionStorage.removeItem('nuska_share_url');
-        sessionStorage.removeItem('nuska_share_title');
-        carregarTutorials({ renderitzar: false }).then(() => {
-          actualitzarPortadaStats();
-          showViewDirect('afegir');
-          setTimeout(() => {
-            document.getElementById('f-url').value = shareUrl;
-            detectarInfoVideo().then(() => {
-              const nomEl = document.getElementById('f-nom-video');
-              if (!nomEl.value.trim() && shareTitle) {
-                nomEl.value = shareTitle;
-              }
-            });
-          }, 100);
-        });
-      } else {
-        carregarTutorials().then(actualitzarPortadaStats);
-      }
+      carregarTutorials().then(actualitzarPortadaStats);
     } else {
       document.getElementById('password-input').focus();
     }
@@ -1423,29 +1440,9 @@
     const val = document.getElementById('password-input').value;
     if (val === '4030') {
       autenticat = true;
-      localStorage.setItem('nuska_auth', '1');
+      sessionStorage.setItem('nuska_auth', '1');
       document.getElementById('password-overlay').classList.add('hidden');
-      const shareUrl = sessionStorage.getItem('nuska_share_url');
-      if (shareUrl) {
-        const shareTitle = sessionStorage.getItem('nuska_share_title') || '';
-        sessionStorage.removeItem('nuska_share_url');
-        sessionStorage.removeItem('nuska_share_title');
-        carregarTutorials({ renderitzar: false }).then(() => {
-          actualitzarPortadaStats();
-          showViewDirect('afegir');
-          setTimeout(() => {
-            document.getElementById('f-url').value = shareUrl;
-            detectarInfoVideo().then(() => {
-              const nomEl = document.getElementById('f-nom-video');
-              if (!nomEl.value.trim() && shareTitle) {
-                nomEl.value = shareTitle;
-              }
-            });
-          }, 100);
-        });
-      } else {
-        carregarTutorials().then(actualitzarPortadaStats);
-      }
+      carregarTutorials().then(actualitzarPortadaStats);
     } else {
       document.getElementById('password-error').textContent = 'Contrasenya incorrecta. Torna-ho a intentar.';
       document.getElementById('password-input').value = '';
@@ -1742,7 +1739,7 @@
   }
 
   // CARREGAR TUTORIALS
-  async function carregarTutorials({ renderitzar = true } = {}) {
+  async function carregarTutorials() {
     const container = document.getElementById('tutorials-container');
     if (container) container.innerHTML = '<div class="loading"><div class="spinner"></div><br>Carregant tutorials...</div>';
     try {
@@ -1750,7 +1747,7 @@
       tutorials = await res.json();
       actualitzarStats();
       actualitzarPortadaStats();
-      if (renderitzar) renderTutorials();
+      renderTutorials();
     } catch (err) {
       console.error('Error:', err);
       if (container) container.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">Error de connexió</div><div class="empty-text">' + (err.message || String(err)) + '</div></div>';
@@ -1916,7 +1913,6 @@
       <div class="card-actions">
         ${url ? `<a href="${escHTML(url)}" target="_blank" class="yt-link">▶ Veure vídeo</a>` : ''}
         <button class="btn btn-edit" onclick='obrirEdicio(${JSON.stringify(t)})'>Editar</button>
-        <button class="btn btn-primary" style="font-size:0.8rem;padding:0.3rem 0.8rem" onclick='obrirActualitzar(${JSON.stringify(t)})'>Actualitzar</button>
       </div>
     </div>`;
   }
@@ -1957,7 +1953,6 @@
       <div style="display:flex;gap:6px;margin-top:8px;">
         ${url ? `<a href="${escHTML(url)}" target="_blank" class="yt-link" onclick="event.stopPropagation()">▶ Veure vídeo</a>` : ''}
         <button class="btn btn-edit" onclick='event.stopPropagation();obrirEdicio(${JSON.stringify(t)})'>Editar</button>
-        <button class="btn btn-primary" style="font-size:0.8rem;padding:0.3rem 0.8rem" onclick='event.stopPropagation();obrirActualitzar(${JSON.stringify(t)})'>Actualitzar</button>
       </div>
     </div>`;
 
@@ -2030,6 +2025,15 @@
       mostrarStatus('status-afegir', 'error', 'Mama, recorda\'t de posar també la categoria i el nom!');
       return;
     }
+    // Comprovar que el nom no existeixi ja
+    const nomNormalitzat = nom.toLowerCase();
+    if (tutorials.some(t => (t.nom || '').trim().toLowerCase() === nomNormalitzat)) {
+      mostrarStatus('status-afegir', 'error', 'Mama, tria un altre nom, que ja tens un tutorial que es diu exactament igual!');
+      const camp = document.getElementById('f-nom');
+      camp.classList.add('input-error');
+      camp.focus();
+      return;
+    }
     const btn = document.getElementById('btn-guardar');
     btn.disabled = true;
     btn.textContent = 'Guardant...';
@@ -2068,15 +2072,35 @@
 
   // EDITAR
   function obrirEdicio(t) {
+    // Recordem el nom per al guardat unificat (necessari per a la crida d'actualitzar progrés)
+    nomActualitzant = t['nom'] || '';
+
+    // Títol del modal amb el nom del tutorial
+    document.getElementById('edit-titol').textContent = 'Editar — ' + (t['nom'] || 'tutorial');
+
+    // --- Dades del tutorial ---
     document.getElementById('edit-nom-original').value = t['nom'] || '';
     document.getElementById('edit-nom').value = t['nom'] || '';
     document.getElementById('edit-categoria').value = t['categoria'] || '';
     document.getElementById('edit-nom-video').value = t['nom del vídeo'] || '';
     document.getElementById('edit-canal').value = t['canal de YT (autoria)'] || '';
     document.getElementById('edit-url').value = t['url'] || '';
-    const feta = t['feta?'] === 'si' || t['feta?'] === 'sí' || t['feta?'] === 'true';
-    document.getElementById('edit-feta').checked = feta;
     document.getElementById('edit-comentari').value = t['comentari personal'] || '';
+
+    // --- Progrés ---
+    document.getElementById('act-nota').value = t['nota sessio'] || '';
+    document.getElementById('act-vegades-num').textContent = parseInt(t['vegades fet']) || 0;
+    const valoracio = parseInt(t['valoracio']) || 0;
+    document.querySelectorAll('#act-stars .star').forEach(s => {
+      s.classList.toggle('on', parseInt(s.dataset.v) <= valoracio);
+    });
+    const intencio = (t['intencio'] || '').toLowerCase().trim();
+    document.querySelectorAll('.chip-intencio').forEach(b => {
+      b.classList.remove('actiu');
+      if (b.dataset.val === intencio) b.classList.add('actiu');
+    });
+    if (!intencio) document.querySelector('.chip-intencio[data-val=""]').classList.add('actiu');
+
     document.getElementById('modal-edicio').classList.add('open');
     document.getElementById('status-edicio').className = 'status-msg';
   }
@@ -2088,38 +2112,78 @@
   async function guardarEdicio() {
     const nom = document.getElementById('edit-nom').value.trim();
     const categoria = document.getElementById('edit-categoria').value;
+    const nomOriginal = document.getElementById('edit-nom-original').value;
     if (!nom || !categoria) {
       mostrarStatus('status-edicio', 'error', 'El nom i la categoria són obligatoris.');
+      return;
+    }
+    // Comprovar que el nom no existeixi en un ALTRE tutorial
+    const nomNormalitzat = nom.toLowerCase();
+    if (tutorials.some(t => (t.nom || '').trim().toLowerCase() === nomNormalitzat && (t.nom || '').trim() !== nomOriginal)) {
+      mostrarStatus('status-edicio', 'error', 'Mama, tria un altre nom, que ja tens un tutorial que es diu exactament igual!');
+      const camp = document.getElementById('edit-nom');
+      camp.classList.add('input-error');
+      camp.focus();
       return;
     }
     const btn = document.getElementById('btn-editar');
     btn.disabled = true;
     btn.textContent = 'Guardant...';
-    const params = new URLSearchParams({
+
+    // --- Recollir camps de DADES ---
+    const vegades = parseInt(document.getElementById('act-vegades-num').textContent) || 0;
+    // "Feta" es dedueix automàticament: si has fet el tutorial 1+ vegades, ja l'has fet
+    const feta = vegades >= 1 ? 'si' : 'no';
+    const paramsDades = new URLSearchParams({
       accio: 'editar',
-      nomOriginal: document.getElementById('edit-nom-original').value,
+      nomOriginal,
       nom,
       categoria,
       nomVideo: document.getElementById('edit-nom-video').value.trim(),
       canal: document.getElementById('edit-canal').value.trim(),
       url: document.getElementById('edit-url').value.trim(),
-      feta: document.getElementById('edit-feta').checked ? 'si' : 'no',
+      feta,
       comentari: document.getElementById('edit-comentari').value.trim()
     });
+
+    // --- Recollir camps de PROGRÉS ---
+    const intencio = document.querySelector('.chip-intencio.actiu')?.dataset.val || '';
+    const nota = document.getElementById('act-nota').value.trim();
+    const valoracio = document.querySelectorAll('#act-stars .star.on').length;
+    // Important: l'accio "actualitzar" usa el nom NOU (després de la possible edició),
+    // perquè s'executa després de l'edició. Però com que les dues crides van en paral·lel,
+    // hem d'usar el nomOriginal per assegurar que el backend troba la fila.
+    const paramsProgres = new URLSearchParams({
+      accio: 'actualitzar',
+      nom: nomOriginal,
+      intencio,
+      notaSessio: nota,
+      vegadesFet: vegades,
+      valoracio
+    });
+
     try {
-      const res = await fetch(API_URL + '?' + params);
-      const data = await res.json();
-      if (data.ok) {
-        mostrarStatus('status-edicio', 'ok', '✓ Canvis guardats!');
-        setTimeout(() => { tancarModal(); carregarTutorials(); }, 1000);
-      } else {
-        mostrarStatus('status-edicio', 'error', data.error || 'Error en editar.');
+      // Primer guardem el progrés (que usa nomOriginal), després les dades
+      // (l'edició pot canviar el nom, així que l'enviem en segon lloc).
+      const resProgres = await fetch(API_URL + '?' + paramsProgres.toString());
+      const dataProgres = await resProgres.json();
+      if (!dataProgres.ok) {
+        mostrarStatus('status-edicio', 'error', dataProgres.error || 'Error guardant el progrés.');
+        btn.disabled = false; btn.textContent = 'Guardar'; return;
       }
+      const resDades = await fetch(API_URL + '?' + paramsDades.toString());
+      const dataDades = await resDades.json();
+      if (!dataDades.ok) {
+        mostrarStatus('status-edicio', 'error', dataDades.error || 'Error en editar les dades.');
+        btn.disabled = false; btn.textContent = 'Guardar'; return;
+      }
+      mostrarStatus('status-edicio', 'ok', '✓ Canvis guardats!');
+      setTimeout(() => { tancarModal(); carregarTutorials(); }, 1000);
     } catch(e) {
       mostrarStatus('status-edicio', 'error', 'Error de connexió.');
     }
     btn.disabled = false;
-    btn.textContent = 'Guardar canvis';
+    btn.textContent = 'Guardar';
   }
 
   // ELIMINAR
@@ -2149,27 +2213,6 @@
     renderTutorials();
   }
 
-  function obrirActualitzar(t) {
-    nomActualitzant = t['nom'] || '';
-    document.getElementById('actualitzar-titol').textContent = nomActualitzant;
-    document.getElementById('act-nota').value = t['nota sessio'] || '';
-    document.getElementById('act-vegades-num').textContent = parseInt(t['vegades fet']) || 0;
-    const valoracio = parseInt(t['valoracio']) || 0;
-    document.querySelectorAll('#act-stars .star').forEach(s => {
-      s.classList.toggle('on', parseInt(s.dataset.v) <= valoracio);
-    });
-    const intencio = (t['intencio'] || '').toLowerCase().trim();
-    document.querySelectorAll('.chip-intencio').forEach(b => {
-      b.classList.remove('actiu');
-      if (b.dataset.val === intencio) b.classList.add('actiu');
-    });
-    if (!intencio) document.querySelector('.chip-intencio[data-val=""]').classList.add('actiu');
-    document.getElementById('modal-actualitzar').classList.add('open');
-  }
-
-  function tancarModalActualitzar() {
-    document.getElementById('modal-actualitzar').classList.remove('open');
-  }
 
   function seleccionarIntencio(btn) {
     document.querySelectorAll('.chip-intencio').forEach(b => b.classList.remove('actiu'));
@@ -2191,34 +2234,7 @@
     });
   });
 
-  async function guardarActualitzacio() {
-    const intencio = document.querySelector('.chip-intencio.actiu')?.dataset.val || '';
-    const nota = document.getElementById('act-nota').value.trim();
-    const vegades = document.getElementById('act-vegades-num').textContent;
-    const valoracio = document.querySelectorAll('#act-stars .star.on').length;
-    const btn = document.querySelector('#modal-actualitzar .btn-primary');
-    btn.disabled = true;
-    btn.textContent = 'Guardant...';
-    try {
-      const params = new URLSearchParams({ accio: 'actualitzar', nom: nomActualitzant, intencio, notaSessio: nota, vegadesFet: vegades, valoracio });
-      const res = await fetch(API_URL + '?' + params.toString());
-      const data = await res.json();
-      if (data.ok) {
-        tancarModalActualitzar();
-        carregarTutorials();
-      } else {
-        alert('No s\'ha pogut guardar. Comprova la connexió.');
-      }
-    } catch(e) {
-      alert('Error de connexió.');
-    }
-    btn.disabled = false;
-    btn.textContent = 'Guardar';
-  }
 
-  document.getElementById('modal-actualitzar').addEventListener('click', function(e) {
-    if (e.target === this) tancarModalActualitzar();
-  });
 
   // GALERIA DE FOTOS
   async function eliminarFoto(btn, nomTutorial, urlFoto) {
@@ -2307,6 +2323,19 @@
     const el = document.getElementById(id);
     el.className = 'status-msg ' + tipus;
     el.textContent = msg;
+    // Forçar reflow per re-disparar l'animació encara que el missatge sigui el mateix
+    void el.offsetWidth;
+    el.classList.add('shake');
+    setTimeout(() => el.classList.remove('shake'), 500);
+    // Fer scroll perquè el missatge sigui visible
+    if (id === 'status-edicio') {
+      // Dins del modal: scroll del propi modal
+      const modal = el.closest('.modal');
+      if (modal) modal.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Vista normal: scroll de la pàgina
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
     if (tipus === 'ok') setTimeout(() => el.className = 'status-msg', 4000);
   }
 
@@ -2317,6 +2346,12 @@
 
   // Inicialitzar
   inicialitzarPortada();
+
+  // Treure marca d'error quan l'usuari modifica el camp del nom
+  ['f-nom', 'edit-nom'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => el.classList.remove('input-error'));
+  });
 </script>
   <canvas class="confeti-canvas" id="confeti-canvas"></canvas>
   <div class="celebracio-overlay" id="celebracio-overlay">
