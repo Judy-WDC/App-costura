@@ -1487,7 +1487,6 @@
     document.getElementById('btn-vista-cards').classList.toggle('active', v === 'cards');
     document.getElementById('btn-vista-llista').classList.toggle('active', v === 'llista');
     renderTutorials();
-    renderTutorials();
   }
   let nomActualitzant = '';
 
@@ -1824,7 +1823,7 @@
   function renderTutorials() {
     const cerca = document.getElementById('search-input').value.toLowerCase();
     let filtrats = tutorials.filter(t => {
-      const coincideixCat = filtreActiu === 'tots' || t['categoria'] === filtreActiu;
+      const coincideixCat = filtreActiu === 'tots' || (t['categoria'] || '').toLowerCase() === filtreActiu.toLowerCase();
       const coincideixCerca = !cerca ||
         (t['nom'] || '').toLowerCase().includes(cerca) ||
         (t['nom del vídeo'] || '').toLowerCase().includes(cerca) ||
