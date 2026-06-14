@@ -2354,6 +2354,15 @@
 
   // Inicialitzar
   inicialitzarPortada();
+
+  // Registrar el Service Worker (per actualitzacions automàtiques de la PWA)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.log('Service Worker no registrat:', err);
+      });
+    });
+  }
 </script>
   <canvas class="confeti-canvas" id="confeti-canvas"></canvas>
   <div class="celebracio-overlay" id="celebracio-overlay">
