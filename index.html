@@ -1937,7 +1937,7 @@
       </div>
       <div class="card-actions">
         ${url ? `<a href="${escHTML(url)}" target="_blank" class="yt-link">▶ Veure vídeo</a>` : ''}
-        <button class="btn btn-edit" onclick='obrirEdicio(${JSON.stringify(t)})'>Editar</button>
+        <button class="btn btn-edit" onclick='obrirEdicio(${escAttr(t)})'>Editar</button>
       </div>
     </div>`;
   }
@@ -1977,7 +1977,7 @@
       ${comentari ? `<div class="card-comentari">${escHTML(comentari)}</div>` : ''}
       <div style="display:flex;gap:6px;margin-top:8px;">
         ${url ? `<a href="${escHTML(url)}" target="_blank" class="yt-link" onclick="event.stopPropagation()">▶ Veure vídeo</a>` : ''}
-        <button class="btn btn-edit" onclick='event.stopPropagation();obrirEdicio(${JSON.stringify(t)})'>Editar</button>
+        <button class="btn btn-edit" onclick='event.stopPropagation();obrirEdicio(${escAttr(t)})'>Editar</button>
       </div>
     </div>`;
 
@@ -2005,6 +2005,12 @@
 
   function escHTML(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // Codifica un objecte a JSON segur per ficar-lo dins d'un atribut onclick='...'
+  // (l'apòstrof i l'ampersand es codifiquen perquè no trenquin l'atribut)
+  function escAttr(obj) {
+    return JSON.stringify(obj).replace(/&/g,'&amp;').replace(/'/g,'&#39;');
   }
 
   // DETECTAR NOM DE VÍDEO I CANAL DES DE LA URL
